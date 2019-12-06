@@ -55,7 +55,7 @@ function MapResult(props) {
                                 </Card.Body>
                                 <Card.Footer 
                                     content={<Button style={{width: 70, height: 40}}> <Ionicons name='md-arrow-back' size={17} color='black'/> </Button>}
-                                    extra={<Button style={{width: 120, height: 40, marginLeft: 40, backgroundColor: '#7d35f2', borderColor: '#7d35f2'}} type='primary' onPress={() => props.handleClickChoose(price, distance)}> Choisir </Button>}
+                                    extra={<Button style={{width: 120, height: 40, marginLeft: 40, backgroundColor: '#7d35f2', borderColor: '#7d35f2'}} type='primary' onPress={() => {props.handleClickChoose(price, distance); props.navigation.navigate('TripOverview')} }> Choisir </Button>}
                                 />
                             </Card>
                         </WingBlank>     
@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
   function mapDispatchToProps(dispatch) {
     return {
       handleClickChoose: function(price, distance) {
+
           dispatch({type: 'chooseTravel', price: price, distance: distance })
       }
     }
