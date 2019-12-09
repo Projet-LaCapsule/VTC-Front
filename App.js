@@ -1,20 +1,18 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import MapResult from './Components/MapResult';
+
+import Navigation from './Navigation';
+import Travel from './Reducers/travel-reducer';
+import {Provider} from 'react-redux';
+import {createStore, combineReducers} from 'redux';
+const store = createStore(combineReducers({Travel}));
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
+    <Provider store={store}>
+      <Navigation/>
+      {/* <MapResult/> */}
+    </Provider>
   );
 }
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
