@@ -1,23 +1,16 @@
-import React from 'react';
-import { createDrawerNavigator} from 'react-navigation-drawer';
-import HomePage from './Components/HomePage';
-import MapResult from './Components/MapResult';
-import TripOverview from './Components/TripOverview';
-import { createAppContainer } from 'react-navigation';
-import { Platform} from 'react-native';
+import React, {Fragment} from 'react';
+import Navigation from './Navigation';
+import Travel from './Reducers/travel-reducer';
+import {Provider} from 'react-redux';
+import {createStore, combineReducers} from 'redux';
+const store = createStore(combineReducers({Travel}));
 
-
-
-const AppNavigator = createDrawerNavigator({
-Home: {
-  screen : HomePage
-},
-MapResult: {
-  screen: MapResult
-},
-TripOverview: {
-  screen: TripOverview
+export default function App() {
+  return (
+    <Provider store={store}>
+      <Navigation/>
+      {/* <MapResult/> */}
+    </Provider>
+  );
 }
-}); 
 
-export default createAppContainer(AppNavigator);
