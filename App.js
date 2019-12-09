@@ -1,20 +1,23 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { createDrawerNavigator} from 'react-navigation-drawer';
+import HomePage from './Components/HomePage';
+import MapResult from './Components/MapResult';
+import TripOverview from './Components/TripOverview';
+import { createAppContainer } from 'react-navigation';
+import { Platform} from 'react-native';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
-  );
+
+
+const AppNavigator = createDrawerNavigator({
+Home: {
+  screen : HomePage
+},
+MapResult: {
+  screen: MapResult
+},
+TripOverview: {
+  screen: TripOverview
 }
+}); 
 
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default createAppContainer(AppNavigator);
