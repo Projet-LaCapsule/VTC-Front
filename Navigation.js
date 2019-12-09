@@ -1,12 +1,12 @@
 import { createAppContainer } from 'react-navigation';
 import MapResult from './Components/MapResult';
 import TripOverview from './Components/TripOverwiew';
-import SignUp from './Components/SignUpPage';
+import SignIn from './Components/SignInPage';
 import { createStackNavigator } from 'react-navigation-stack';
 
 var StackNavigator = createStackNavigator({
     SignUp: {
-        screen: SignUp,
+        screen: SignIn,
         navigationOptions: () => ({
             header: null
         })

@@ -1,5 +1,5 @@
 export default function User(userDatas = {}, action) {
-    if(action.type === 'signUp') {
+    if(action.type === 'sign') {
         console.log(userDatas)
         console.log('Reducer: My action ---->' + action)
         console.log(action)
