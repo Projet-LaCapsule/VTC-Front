@@ -13,15 +13,7 @@ const Item = List.Item
 function MapResult(props) {
     const [price, setPrice] = useState(102);
     const [distance, setDistance] = useState(34);
-
-    AsyncStorage.getItem("userVTC",
-                function(err, data) { 
-                    console.log('MapResult : data not parse ------>' + data)
-                  var userData = JSON.parse(data); 
-                  console.log('MapResult : data parse ------>' + userData)
-
-                } 
-              )
+    
     return (
             <View style={styles.container}>
               <ToggleHeader navigation={props.navigation} title="MapResult" />     
@@ -39,13 +31,13 @@ function MapResult(props) {
                     <Marker
                         pinColor="#32a6ff"
                         title="Departure"
-                        description="95 Cours Lafayette"
+                        description={props.departure}
                         coordinate={{latitude: 45.7636126, longitude: 4.8495353}}
                     />
                     <Marker
                         pinColor="#ea1919"
                         title="Arrival"
-                        description="97 Cours Charlemagne"
+                        description={props.arrival}
                         coordinate={{latitude: 45.741537, longitude: 4.819935}}
                     />
                 </MapView>
@@ -55,8 +47,8 @@ function MapResult(props) {
                             <Card>
                                 <Card.Body>
                                     <List >
-                                        <Item extra={ <Ionicons name='md-radio-button-on' size={20} color='#32a6ff'/>}> 95 Cours Lafayette </Item>
-                                        <Item extra={ <Ionicons name='md-radio-button-on' size={20} color='#ea1919'/>}> 97 Cours Charlemagne </Item>
+                                        <Item extra={ <Ionicons name='md-radio-button-on' size={20} color='#32a6ff'/>}> {props.departure} </Item>
+                                        <Item extra={ <Ionicons name='md-radio-button-on' size={20} color='#ea1919'/>}> {props.arrival} </Item>
                                         <View style={{flex: 1, flexDirection: 'row', justifyContent: "space-between"}}>
                                             <Text style={styles.textForm}> {price} Km</Text>
                                             <Text style={styles.textFormPrice}> {distance} €</Text>          
@@ -82,7 +74,7 @@ const styles = StyleSheet.create({
     },
     mapStyle: {
         width: Dimensions.get('window').width,
-        height: '60%'
+        height: '50%'
     },
     textForm: {
        padding: 10,
@@ -104,9 +96,18 @@ const styles = StyleSheet.create({
       }
     }
   }
+
+  function mapStateToProps(state) {
+      return {
+        departure: state.Travel.departure,
+        arrival: state.Travel.arrival,
+        date: state.Travel.data,
+        time: state.Travel.time
+      }
+  }
   
   export default connect(
-      null,
+      mapStateToProps,
       mapDispatchToProps
   ) (MapResult);
 

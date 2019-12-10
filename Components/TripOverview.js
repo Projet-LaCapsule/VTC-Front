@@ -23,11 +23,11 @@ function MapResult(props) {
                             <Card>
                                 <Text style={styles.titleCard}> Récapitulatif de la course</Text>
                                 <Card.Body>
-                                    <InputItem style={styles.textForm} value='95 Cours Lafayette' editable={false}> Départ : </InputItem>
-                                    <InputItem style={styles.textForm} value='97 Cours Charlemagne' editable={false}> Arrivé : </InputItem>
+                                    <InputItem style={styles.textForm} value={props.departure} editable={false}> Départ : </InputItem>
+                                    <InputItem style={styles.textForm} value={props.arrival} editable={false}> Arrivé : </InputItem>
                                     <InputItem style={styles.textForm} value={`${props.prix} €`} editable={false}> Prix : </InputItem>
                                     <InputItem style={styles.textForm} value={`${props.distance} Km`} editable={false}> Km : </InputItem>
-                                    <InputItem style={styles.textForm} value='23/02/2019' extra='19h03' editable={false}> Date : </InputItem>
+                                    <InputItem style={styles.textForm} value={props.date} extra={props.time} editable={false}> Date : </InputItem>
                                 </Card.Body>
                                 <Card.Footer 
                                     content={<Button style={{width: 70, height: 40}}> <Ionicons name='md-arrow-back' size={17} color='black'/> </Button>}
@@ -75,10 +75,16 @@ const styles = StyleSheet.create({
   });
 
   function mapStateToProps(state) {
+      console.log('State TripOverview ----->');
       console.log(state);
     return {
-      prix: state.Travel.price,
-      distance: state.Travel.distance
+        departure: state.Travel.departure,
+        arrival: state.Travel.arrival,
+        prix: state.Travel.price,
+        distance: state.Travel.distance,
+        date: state.Travel.date,
+        time: state.Travel.time
+
     }
   }
   
