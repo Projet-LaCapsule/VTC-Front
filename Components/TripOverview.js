@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 import {connect} from 'react-redux';
 import Modal from "react-native-modalbox";
+ import ToggleHeader from "./ToggleHeader"
 
 import { Card, WingBlank, Button, InputItem } from '@ant-design/react-native';
 
@@ -14,6 +15,7 @@ function MapResult(props) {
     }
     return (
         <Fragment>
+            <ToggleHeader navigation={props.navigation} title="TripOverview" />   
             <ScrollView style={{flex: 1}} scrollEnabled={true} >
                 <View style={styles.container}>
                     <View style={{marginTop: 1}}>

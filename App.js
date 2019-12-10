@@ -1,7 +1,4 @@
 import React, {Fragment} from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import MapResult from './Components/MapResult';
-
 import Navigation from './Navigation';
 import Travel from './Reducers/travel-reducer';
 import User from './Reducers/user-reducer';
@@ -18,3 +15,4 @@ export default function App() {
     </Provider>
   );
 }
+

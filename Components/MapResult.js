@@ -1,8 +1,10 @@
+
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, Dimensions, ScrollView, AsyncStorage} from 'react-native';
 import MapView , {Marker, Polyline} from 'react-native-maps';
 import {Ionicons} from '@expo/vector-icons';
 import {connect} from 'react-redux';
+import ToggleHeader from "./ToggleHeader";
 
 import { Card, WingBlank, List, Button } from '@ant-design/react-native';
 
@@ -22,6 +24,7 @@ function MapResult(props) {
               )
     return (
             <View style={styles.container}>
+              <ToggleHeader navigation={props.navigation} title="MapResult" />     
                 <MapView style={styles.mapStyle} region={{latitude: 45.7615651, longitude: 4.8399114, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }}>
                     <Polyline
                         coordinates={[
@@ -106,3 +109,4 @@ const styles = StyleSheet.create({
       null,
       mapDispatchToProps
   ) (MapResult);
+
