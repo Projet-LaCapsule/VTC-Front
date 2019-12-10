@@ -3,6 +3,9 @@ import MapResult from './Components/MapResult';
 import HomePage from './Components/HomePage';
 import TripOverview from './Components/TripOverwiew';
 import SignIn from './Components/SignInPage';
+import SignUn from './Components/SignUpPage';
+
+import SettingPage from './Components/SettingsPage';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator} from 'react-navigation-drawer';
 
@@ -20,6 +23,7 @@ import { createDrawerNavigator} from 'react-navigation-drawer';
     } ,
     MapResult: MapResult,
     TripOverview: TripOverview,
+    SettingPage: SettingPage,
     
 }) */
 
