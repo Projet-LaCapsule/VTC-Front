@@ -6,7 +6,7 @@ import { Button, } from '@ant-design/react-native';
 
 import IpAdress from '../config';
 
-function SignUp(props) {
+function SignIn(props) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -24,7 +24,7 @@ function SignUp(props) {
 
                 props.signUp(data.user._id, data.user.first_name, data.user.last_name, data.user.email, data.user.tel, data.user.password); //enregistre les données pour redux
                 props.checkStatus(true); // Status Connecter
-                props.navigation.navigate('TripOverview');
+                props.navigation.navigate('SettingPage');
             }
         })
         .catch(err => {
@@ -100,4 +100,4 @@ const styles = StyleSheet.create({
   export default connect(
       null,
       mapDispatchToProps
-  ) (SignUp);
+  ) (SignIn);
