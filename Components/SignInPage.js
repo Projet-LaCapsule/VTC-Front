@@ -41,7 +41,7 @@ function SignIn(props) {
 
             <Button style={styles.button} onPress={() => handleSubmit()} > Se Connecter </Button>
 
-            <Text style={{marginBottom: 10}}> Pas de compte ? </Text>
+            <Text style={{marginBottom: 10}} onPress={() => props.navigation.navigate('Signup')}> Pas de compte ? </Text>
 
         </View>
     );

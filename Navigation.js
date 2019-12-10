@@ -1,31 +1,13 @@
 import { createAppContainer } from 'react-navigation';
 import MapResult from './Components/MapResult';
 import HomePage from './Components/HomePage';
-import TripOverview from './Components/TripOverwiew';
+import TripOverview from './Components/TripOverview';
 import SignIn from './Components/SignInPage';
-import SignUn from './Components/SignUpPage';
+import SignUp from './Components/SignUpPage';
 
 import SettingPage from './Components/SettingsPage';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator} from 'react-navigation-drawer';
-
-
-/* var StackNavigator = createStackNavigator({
-    MapResult: MapResult,
-    TripOverview: TripOverview,
-}) */
-/* var StackNavigator = createStackNavigator({
-    SignUp: {
-        screen: SignIn,
-        navigationOptions: () => ({
-            header: null
-        })
-    } ,
-    MapResult: MapResult,
-    TripOverview: TripOverview,
-    SettingPage: SettingPage,
-    
-}) */
 
 const AppNavigator = createDrawerNavigator({
 Home: {
@@ -36,9 +18,32 @@ MapResult: {
 },
 TripOverview: {
   screen: TripOverview
-}
+},
 }); 
 
 
+var StackNavigator = createStackNavigator({
+  DrawerNavigationApp: {
+    screen: AppNavigator,
+    navigationOptions: () => ({
+        header: null
+    })
+},
 
-export default Navigation = createAppContainer(AppNavigator)
+  Signup: {
+      screen: SignUp,
+      navigationOptions: () => ({
+          header: null
+      })
+  },
+  Signin: {
+    screen: SignIn,
+    navigationOptions: () => ({
+        header: null
+    })
+},
+  SettingPage: SettingPage,
+
+})
+
+export default Navigation = createAppContainer(StackNavigator)

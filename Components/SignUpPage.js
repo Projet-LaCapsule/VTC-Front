@@ -48,7 +48,7 @@ function SignUp(props) {
 
     return( 
         <View style={styles.container}>
-            <Text style={{marginBottom: 15}}> Avez-vous un compte ? </Text>
+            <Text style={{marginBottom: 15}} onPress={() => props.navigation.navigate('Signin')}> Avez-vous un compte ? </Text>
             <View style={styles.separate} /> 
             
             <Text style={{marginBottom: 15}}> Connectez-vous avec : </Text>
