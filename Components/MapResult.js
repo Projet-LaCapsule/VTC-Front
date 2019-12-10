@@ -1,6 +1,6 @@
 
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, Dimensions, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, Dimensions, ScrollView, AsyncStorage} from 'react-native';
 import MapView , {Marker, Polyline} from 'react-native-maps';
 import {Ionicons} from '@expo/vector-icons';
 import {connect} from 'react-redux';
@@ -14,6 +14,14 @@ function MapResult(props) {
     const [price, setPrice] = useState(102);
     const [distance, setDistance] = useState(34);
 
+    AsyncStorage.getItem("userVTC",
+                function(err, data) { 
+                    console.log('MapResult : data not parse ------>' + data)
+                  var userData = JSON.parse(data); 
+                  console.log('MapResult : data parse ------>' + userData)
+
+                } 
+              )
     return (
             <View style={styles.container}>
               <ToggleHeader navigation={props.navigation} title="MapResult" />     

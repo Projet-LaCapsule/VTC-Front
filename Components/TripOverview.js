@@ -40,7 +40,7 @@ function MapResult(props) {
             </ScrollView> 
             <Modal isOpen={isVisible} position={"bottom"} style={[styles.modal, styles.modal4]}>
                 <Text style={{marginLeft: 20, marginBottom: 25, color: 'green', fontSize: 20}}> Votre course a été validée <Ionicons name='md-checkmark-circle' size={25} color='green'/> </Text>
-                <Button style={{width: '70%', height: 40, marginLeft: 20}} type='primary' onPress={() => handleClickValidation()} > Ok !</Button>
+                <Button style={{width: '70%', height: 40, marginLeft: 20}} type='primary' onPress={() => [handleClickValidation(), props.navigation.navigate('SignUp')]} > Ok !</Button>
             </Modal>
         </Fragment>  
     );
