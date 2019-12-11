@@ -14,6 +14,14 @@ function MapResult(props) {
     const [price, setPrice] = useState(102);
     const [distance, setDistance] = useState(34);
     
+    var handleClick = () => {
+        if(props.userIsConnected) {
+            props.navigation.navigate('TripOverview');
+        } else {
+            props.navigation.navigate('Signup');
+        }
+    }
+
     return (
             <View style={styles.container}>
               <ToggleHeader navigation={props.navigation} title="MapResult" />     
@@ -58,7 +66,7 @@ function MapResult(props) {
                                 </Card.Body>
                                 <Card.Footer 
                                     content={<Button style={{width: 70, height: 40}}> <Ionicons name='md-arrow-back' size={17} color='black'/> </Button>}
-                                    extra={<Button style={{width: 120, height: 40, marginLeft: 40, backgroundColor: '#7d35f2', borderColor: '#7d35f2'}} type='primary' onPress={() => {props.handleClickChoose(price, distance); props.navigation.navigate('TripOverview')} }> Choisir </Button>}
+                                    extra={<Button style={{width: 120, height: 40, marginLeft: 40, backgroundColor: '#7d35f2', borderColor: '#7d35f2'}} type='primary' onPress={() => {props.handleClickChoose(price, distance); handleClick()} }> Choisir </Button>}
                                 />
                             </Card>
                         </WingBlank>     
@@ -102,7 +110,8 @@ const styles = StyleSheet.create({
         departure: state.Travel.departure,
         arrival: state.Travel.arrival,
         date: state.Travel.data,
-        time: state.Travel.time
+        time: state.Travel.time,
+        userIsConnected: state.UserStatus
       }
   }
   

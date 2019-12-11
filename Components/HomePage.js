@@ -32,6 +32,7 @@ const HomePage = props => {
           function(err, data) { 
             if(data) {
               var userData = JSON.parse(data); 
+              console.log('userData --->')
               console.log(userData);
 
               props.signUp(userData._id, userData.first_name, userData.last_name, userData.email, userData.tel, userData.password); //enregistre les données pour redux
@@ -39,12 +40,15 @@ const HomePage = props => {
 
             } else {
               console.log('No user connected');
+              props.checkStatus(false); 
             }
           } 
         )
      }
 
      checkUser();
+
+     //AsyncStorage.removeItem('userVTC');
    }, [])
 
       return (
