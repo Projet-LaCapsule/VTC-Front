@@ -55,7 +55,7 @@ const HomePage = props => {
    }, [])
 
       return (
-<<<<<<< HEAD
+
         <KeyboardAvoidingView behavior="padding" style={{flex: 1}} enabled> 
       <View style={{width: '100%', height: '100%',flex:1, alignItems: 'center', margin: 0}}>  
 
