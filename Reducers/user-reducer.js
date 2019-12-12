@@ -7,6 +7,7 @@ export default function User(userDatas = {}, action) {
         var cpyUser = {...userDatas}; 
 
         //Enregistre les infos user dans la copy du state userDatas
+        cpyUser.id = action.id;
         cpyUser.firstName = action.firstName;
         cpyUser.lastName = action.lastName;
         cpyUser.email = action.email;

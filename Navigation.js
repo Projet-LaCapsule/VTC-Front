@@ -13,6 +13,7 @@ import {connect} from 'react-redux';
 var AppNavigator ;
 var isConnected ;
 
+
 const userConnected = (props) => {
   isConnected = props.isConnected;
 }
@@ -28,6 +29,8 @@ MapResult: {
 },
 'Récapitulatif course': {
   screen: TripOverview
+
+
 },
 'Créer un compte': {
   screen: SignUp
