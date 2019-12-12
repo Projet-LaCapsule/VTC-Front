@@ -10,14 +10,14 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator} from 'react-navigation-drawer';
 
 const AppNavigator = createDrawerNavigator({
-Home: {
-  screen : HomePage
-},
-MapResult: {
-  screen: MapResult
-},
-TripOverview: {
-  screen: TripOverview
+  Home: {
+    screen : HomePage
+  },
+  MapResult: {
+    screen: MapResult
+  },
+  TripOverview: {
+    screen: TripOverview
 },
 }); 
 

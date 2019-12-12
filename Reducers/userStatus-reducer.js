@@ -1,4 +1,4 @@
-export default function User(isConnected = false, action) {
+export default function UserIsConnected(isConnected = false, action) {
     if(action.type === 'checkStatus') {
         console.log('Reducer Status');
         console.log(isConnected)
