@@ -24,7 +24,7 @@ function MapResult(props) {
               )
     return (
             <View style={styles.container}>
-              <ToggleHeader navigation={props.navigation} title="MapResult" />     
+              <ToggleHeader navigation={props.navigation} title="Votre recherche" />     
                 <MapView style={styles.mapStyle} region={{latitude: 45.7615651, longitude: 4.8399114, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }}>
                     <Polyline
                         coordinates={[

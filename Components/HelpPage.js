@@ -1,13 +1,13 @@
 import React from "react";
 import { View } from "antd-mobile";
 
-const UserTrip = props => {
+const HelpPage = props => {
       return (
     <View>
-        Hello userTrip
+        Hello HelpPage
     </View>
   );
     };
 
-    export default UserTrip;
+    export default HelpPage;
 

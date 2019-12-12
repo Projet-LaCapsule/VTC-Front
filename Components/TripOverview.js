@@ -15,7 +15,7 @@ function MapResult(props) {
     }
     return (
         <Fragment>
-            <ToggleHeader navigation={props.navigation} title="TripOverview" />   
+            <ToggleHeader navigation={props.navigation}  />   
             <ScrollView style={{flex: 1}} scrollEnabled={true} >
                 <View style={styles.container}>
                     <View style={{marginTop: 1}}>

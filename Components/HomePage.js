@@ -1,28 +1,27 @@
  import React, {useState} from 'react';
- import { View, TextInput, StyleSheet, Text} from 'react-native';
+ import { View, TextInput, StyleSheet, Text, Button} from 'react-native';
  import ToggleHeader from "./ToggleHeader";
  import { Tile } from 'react-native-elements';
- import imagetile from '../assets/taxiMin.jpg';
- import { Button } from '@ant-design/react-native';
+ import imagetile from '../assets/taxi.jpg';
  import DatePicker from 'react-native-datepicker';
+ import AntIcon from "react-native-vector-icons/AntDesign";
+
 
 var ladate=new Date();
 var datedujour = ladate.getDate()+"/"+(ladate.getMonth()+1)+"/"+ladate.getFullYear();
 var timeDay = ladate.getHours()+" h"+" "+ladate.getMinutes();
 
-
  
 const HomePage = props => {   
+
    var [departure, setDeparture] = useState('');
-   var [arrival, setArrival] = useState('');
+   var [arrival, setArrival] = useState('');  
    var [date, setDate] = useState(datedujour);
    var [time, setTime] = useState(timeDay);
 
-  
-
-   // console.log(date)  ;
-    console.log('console log de time',time) ;
-   //console.log(timeDay);
+      // console.log(date)  ;
+      //console.log('console log de time',time) ;
+      //console.log(timeDay);
 
       return (
            
@@ -34,7 +33,8 @@ const HomePage = props => {
         navigation={props.navigation} title="HomePage"  /> 
        
        {/* image */}  
-        <Tile
+        <Tile 
+        titleStyle={{ color: 'black', fontSize: 40}}
         imageSrc={imagetile}
         captionStyle={{ opacity: 1 }}
         title="Ou souhaitez-vous aller ?"
@@ -42,34 +42,34 @@ const HomePage = props => {
         />
 
         {/* form HomePage */}
-         <TextInput style = {{height: 40, margin: 10, borderColor: 'grey', borderWidth: 0.5,width:'70%',backgroundColor:'white',opacity:0.8}}
+         <TextInput style = {styles.input}
+              style= {{ marginTop: 10 }}
               underlineColorAndroid = "transparent"
-              placeholder = "  ou êtes vous ?  "
-              placeholderTextColor = "black"
+              placeholder = "Ma position"
+              placeholderTextColor = "#393e46"
               autoCapitalize = "none"
               onChangeText={(e) => setDeparture(e)}
           />
 
-          <TextInput style = {{height: 40, margin: 10, borderColor: 'grey', borderWidth: 0.5,width:'70%',backgroundColor:'white',opacity:0.8}}
+          <TextInput style = {styles.input}
               underlineColorAndroid = "transparent"
-              placeholder = "  oo souhaitez-vous aller ?  "
-              placeholderTextColor = "black"
+              placeholder = "  Ou allez-vous ?  "
+              placeholderTextColor = "#393e46"
               autoCapitalize = "none"
               onChangeText={(e) => setArrival(e)}
           />
           
           <DatePicker
-          style={{width: 200}}
-          date={date}  //initial date from state
-          //time={time}
-          mode="datetime" //The enum of date, datetime and time
-          placeholder="select date"
-          format="DD-MM-YYYY"
-          minDate="01-01-2019"
-          maxDate="01-01-2021"
-          confirmBtnText="Confirm"
-          cancelBtnText="Cancel"
-          customStyles={{
+            style = {styles.datepicker}
+            date={date}  //initial date from state
+            mode="datetime" //The enum of date, datetime and time
+            placeholder="select date"
+            format="DD-MM-YYYY"
+            minDate="01-01-2019"
+            maxDate="01-01-2021"
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
+            customStyles={{
             dateIcon: {
               position: 'absolute',
               left: 0,
@@ -82,37 +82,74 @@ const HomePage = props => {
           }}
           onDateChange={(dateChange, timeChange) => { 
             [setDate(dateChange),setTime(timeChange) ]
-            console.log(timeChange);
+            //console.log(timeChange);
             var timeNewDay = timeChange.getHours()+" h"+" "+timeChange.getMinutes();
-            console.log(timeNewDay);
+            //console.log(timeNewDay);
             timeNewDay.toString();
             setTime(timeNewDay);
+            
           }}
         />
-         <TextInput style = {{height: 40, margin: 10, borderColor: 'grey', borderWidth: 0.5,width:'40%',backgroundColor:'white',opacity:0.8}}
+         <TextInput style = {styles.input}
               underlineColorAndroid = "transparent"
-              value = {`${time}`}
-              placeholderTextColor = "black"
+              value = {`${time}`} 
+              placeholderTextColor = "#393e46" 
               autoCapitalize = "none"
           />
 
-          <Button
-              type = "primary"
-              style = {{height: 40, margin: 10, backgroundColor: 'red', borderColor: 'red'}} 
-              onPress={()=>console.log('console log de button',departure,arrival)}> 
-              Valider
-          </Button>
+          <Button 
+              style = {styles.submitButton}
+              title = "Valider"
+              onPress={()=>props.navigation.navigate('MapResult')}
+          />              
+             {/* form HomePage */}
 
-       </View>   
-        
+             {/* footer */}
+            <View style={{ flex: 1, backgroundColor: '#222831', alignItems: 'center', justifyContent: 'center',width: '100%', maxHeight: 60, marginTop: 10 }}>
+            <AntIcon name="car" color="#00adb5" size={35} />
+            <Text style = {{color: 'white', fontSize:10}}> Choisissez votre course </Text>
+           </View>
+      </View>         
+
     );
-  }
+  } 
 
 const styles = StyleSheet.create({
     toggle: {
       flex: 1,
-      marginTop: 0
-    }
+      marginTop: 0,
+      
+    },
+     datepicker: {
+      borderColor: '#222831',
+      borderWidth: 0.2,
+      width: '70%', 
+    },
+
+    input: {
+      width: '70%', 
+      margin: 8,
+      height: 40,
+      borderWidth: 0,
+      backgroundColor: '#BBBBBB',
+      fontWeight: '400',
+      padding: 10,
+      borderRadius: 3,
+      textAlign:'center',
+   },
+   submitButton: {
+      width: '70%',
+      backgroundColor: '#00adb5',
+      padding: 10,
+      marginBottom: 15,
+      height: 40,
+      borderRadius: 3,
+      marginTop: 30,
+      color: 'white',
+      textAlign:'center',
+      
+   },
+   
  });
   
 

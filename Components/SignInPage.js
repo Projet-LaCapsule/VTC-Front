@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {View, Text, StyleSheet, TextInput, AsyncStorage} from 'react-native';
 import {connect} from 'react-redux';
-
 import { Button, } from '@ant-design/react-native';
-
 import IpAdress from '../config';
+import ToggleHeader from "./ToggleHeader";
 
 function SignIn(props) {
     const [email, setEmail] = useState('');
@@ -34,6 +33,10 @@ function SignIn(props) {
 
     return( 
         <View style={styles.container}>
+            {/* Burger menu */}  
+            <ToggleHeader style={styles.toggle}     
+            navigation={props.navigation} title="HomePage"  /> 
+       
             <Text style={{marginBottom: 25, fontSize: 25}}> Connectez Vous </Text>
             
             <TextInput style={styles.textForm} value={email} onChangeText={e => setEmail(e)} placeholder='Email'/>
@@ -52,7 +55,7 @@ const styles = StyleSheet.create({
       flex: 1,
       flexDirection: 'column',
       alignItems: 'center',
-      marginTop: 50
+      //marginTop: 50
     },
     socialButton: {
         width: '70%',

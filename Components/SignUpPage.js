@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import {View, Text, StyleSheet, TextInput, AsyncStorage} from 'react-native';
 import { SocialIcon } from 'react-native-elements'
 import {connect} from 'react-redux';
+import ToggleHeader from "./ToggleHeader";
 
-import { Button, } from '@ant-design/react-native';
+import { Button } from '@ant-design/react-native';
 
 import IpAdress from '../config';
 
@@ -48,6 +49,10 @@ function SignUp(props) {
 
     return( 
         <View style={styles.container}>
+            {/* Burger menu */}  
+            <ToggleHeader  
+            style={styles.toggle}     
+             navigation={props.navigation}  /> 
             <Text style={{marginBottom: 15}} onPress={() => props.navigation.navigate('Signin')}> Avez-vous un compte ? </Text>
             <View style={styles.separate} /> 
             
@@ -93,7 +98,7 @@ const styles = StyleSheet.create({
       flex: 1,
       flexDirection: 'column',
       alignItems: 'center',
-      marginTop: 50
+      //marginTop: 50
     },
     separate: {
         height: 1,
