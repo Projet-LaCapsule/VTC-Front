@@ -5,7 +5,7 @@ import { Input } from 'react-native-elements';
 
 import { Button, } from '@ant-design/react-native';
 
-import IpAdress from '../config';
+import {IpAdress} from '../config';
 
 function SignUp(props) {
     var propsTel = props.tel.toString();

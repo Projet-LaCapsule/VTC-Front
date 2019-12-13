@@ -26,27 +26,27 @@ function MapResult(props) {
             <View style={styles.container}>
               <ToggleHeader navigation={props.navigation} title="MapResult" />     
                 <MapView style={styles.mapStyle} region={{latitude: 45.7615651, longitude: 4.8399114, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }}>
-                    <Polyline
+                    {/* <Polyline
                         coordinates={[
-                            { latitude: 45.7636126, longitude: 4.8495353 },
-                            { latitude: 45.7633907, longitude: 4.8344872},
-                            { latitude: 45.741537, longitude: 4.819935 },
+                            { latitude: props.positionDeparture.lat, longitude: props.positionDeparture.long },
+                           // { latitude: 45.7633907, longitude: 4.8344872},
+                            { latitude: props.positionArrival.lat, longitude: props.positionArrival.long },
                         ]}
                         strokeColor="#1587d3" // fallback for when `strokeColors` is not supported by the map-provider
 
                         strokeWidth={2}
-                    />
+                    /> */}
                     <Marker
                         pinColor="#32a6ff"
                         title="Departure"
                         description={props.departure}
-                        coordinate={{latitude: 45.7636126, longitude: 4.8495353}}
+                        coordinate={{latitude: props.positionDeparture.lat, longitude: props.positionDeparture.long}}
                     />
                     <Marker
                         pinColor="#ea1919"
                         title="Arrival"
                         description={props.arrival}
-                        coordinate={{latitude: 45.741537, longitude: 4.819935}}
+                        coordinate={{latitude: props.positionArrival.lat, longitude: props.positionArrival.long}}
                     />
                 </MapView>
                 <ScrollView style={{flex: 1}} scrollEnabled={true} >
@@ -111,6 +111,15 @@ const styles = StyleSheet.create({
         arrival: state.Travel.arrival,
         date: state.Travel.data,
         time: state.Travel.time,
+        positionDeparture: {
+            lat: state.Travel.positionDeparture.lat,
+            long: state.Travel.positionDeparture.long
+        },
+        positionArrival: {
+            lat: state.Travel.positionArrival.lat,
+            long: state.Travel.positionArrival.long
+        },
+
         userIsConnected: state.UserStatus
       }
   }

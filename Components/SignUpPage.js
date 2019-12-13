@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 
 import { Button, } from '@ant-design/react-native';
 
-import IpAdress from '../config';
+import {IpAdress} from '../config';
 
 function SignUp(props) {
     const [firstName, setFirstName] = useState('');

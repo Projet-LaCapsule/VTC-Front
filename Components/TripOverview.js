@@ -7,7 +7,7 @@ import ToggleHeader from "./ToggleHeader"
 
 import { Card, WingBlank, Button, InputItem } from '@ant-design/react-native';
 
-import IpAdress from "../config";
+import {IpAdress} from "../config";
 function MapResult(props) {
     const [isVisible, setIsVisible] = useState(false);
 
