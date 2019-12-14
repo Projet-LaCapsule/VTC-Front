@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     },
     mapStyle: {
         width: Dimensions.get('window').width,
-        height: '50%'
+        height: '40%'
     },
     textForm: {
        padding: 10,
