@@ -380,11 +380,11 @@ class HomePage extends Component {
 
   render() {
     const predictionsRenderDeparture = this.state.predictionsDeparture.map(predictions => (
-      <Text style={styles.predictionsStyle} onPress={() => this.setState({departure: predictions.description})} key={predictions.id}>  {predictions.description} </Text>
+      <Text style={styles.predictionsStyle} onPress={() => this.setState({departure: predictions.description, predictionsDeparture: []})} key={predictions.id}>  {predictions.description} </Text>
     ))
 
     const predictionsRenderArrival = this.state.predictionsArrival.map(predictions => (
-      <Text style={styles.predictionsStyle} onPress={() => this.setState({arrival: predictions.description})} key={predictions.id}>  {predictions.description} </Text>
+      <Text style={styles.predictionsStyle} onPress={() => this.setState({arrival: predictions.description, predictionsArrival: []})} key={predictions.id}>  {predictions.description} </Text>
     ))
 
     return (
@@ -398,15 +398,15 @@ class HomePage extends Component {
           navigation={this.props.navigation} title="HomePage"  /> 
         
         {/* image */}  
-          {/* <Tile
+          <Tile
           imageSrc={imagetile}
           captionStyle={{ opacity: 1 }}
           title="Ou souhaitez-vous aller ?"
           featured          
-          /> */}
+          />
 
           {/* form HomePage */}
-          <TextInput style = {{height: 40, marginTop: 10, borderColor: 'grey', borderWidth: 0.5,width:'70%',backgroundColor:'white',opacity:0.8}}
+          <TextInput style = {{height: 40, marginTop: 10, borderColor: 'grey', borderWidth: 0.5,width:'70%',backgroundColor:'white',opacity:0.8, paddingLeft: 8}}
               //  underlineColorAndroid = "transparent"
                 placeholder = "Ou êtes vous ?  "
                 placeholderTextColor = "black"
@@ -415,7 +415,7 @@ class HomePage extends Component {
                 onChangeText={(e) => this.onChangeDeparture(e)}
             />
               {predictionsRenderDeparture}
-            <TextInput style = {{height: 40, margin: 10, borderColor: 'grey', borderWidth: 0.5,width:'70%',backgroundColor:'white',opacity:0.8}}
+            <TextInput style = {{height: 40, margin: 10, borderColor: 'grey', borderWidth: 0.5,width:'70%',backgroundColor:'white',opacity:0.8, paddingLeft: 8}}
                 //underlineColorAndroid = "transparent"
                 placeholder = "  Ou souhaitez-vous aller ?  "
                 placeholderTextColor = "black"

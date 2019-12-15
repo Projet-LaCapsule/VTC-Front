@@ -1,19 +1,22 @@
 
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, Dimensions, ScrollView, AsyncStorage} from 'react-native';
 import MapView , {Marker, Polyline} from 'react-native-maps';
 import {Ionicons} from '@expo/vector-icons';
 import {connect} from 'react-redux';
 import ToggleHeader from "./ToggleHeader";
-
+import MapViewDirections from 'react-native-maps-directions';
 import { Card, WingBlank, List, Button } from '@ant-design/react-native';
 
+import {ApiAddressGoogle} from '../config';
 const Item = List.Item
 
 function MapResult(props) {
     const [price, setPrice] = useState(102);
     const [distance, setDistance] = useState(34);
     
+    const origin = { latitude: 23.053150, longitude: 72.517100 };
+    const destination = { latitude: 23.053177, longitude: 72.517365 };
     var handleClick = () => {
         if(props.userIsConnected) {
             props.navigation.navigate('TripOverview');
@@ -22,6 +25,10 @@ function MapResult(props) {
         }
     }
 
+    // useEffect(() => {
+    //     origin = {latitude: props.positionDeparture.lat, longitude: props.positionDeparture.long}
+    //     destination = {latitude: props.positionArrival.lat, longitude: props.positionArrival.long}
+    // }, [])
     return (
             <View style={styles.container}>
               <ToggleHeader navigation={props.navigation} title="MapResult" />     
@@ -49,6 +56,13 @@ function MapResult(props) {
                         coordinate={{latitude: props.positionArrival.lat, longitude: props.positionArrival.long}}
                     />
                 </MapView>
+                <MapViewDirections 
+                    origin={{latitude: props.positionDeparture.lat, longitude: props.positionDeparture.long}}
+                    destination= {{latitude: props.positionArrival.lat, longitude: props.positionArrival.long}}
+                    apikey= {ApiAddressGoogle}
+                    strokeColor='hotpink'
+                />
+            
                 <ScrollView style={{flex: 1}} scrollEnabled={true} >
                     <View style={{marginTop: 1}}>
                         <WingBlank size='sm'>  
