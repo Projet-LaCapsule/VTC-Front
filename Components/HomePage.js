@@ -6,7 +6,6 @@ import imagetile from '../assets/taxiMin.jpg';
 import { Button } from '@ant-design/react-native';
 import DatePicker from 'react-native-datepicker';
 import {connect} from 'react-redux';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import _ from 'lodash';
 
 import {ApiAddressGoogle} from '../config';
@@ -319,7 +318,7 @@ class HomePage extends Component {
     }
 
     fetchArrival = async () => {
-       await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${transformAddressArrival},+Lyon,+FR&key=${ApiAddressGoogle}`)
+       await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${transformAddressArrival},+FR&key=${ApiAddressGoogle}`)
       .then(resonse => {
         return resonse.json();
       })

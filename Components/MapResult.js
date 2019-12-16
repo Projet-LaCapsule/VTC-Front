@@ -8,15 +8,16 @@ import ToggleHeader from "./ToggleHeader";
 import MapViewDirections from 'react-native-maps-directions';
 import { Card, WingBlank, List, Button } from '@ant-design/react-native';
 
+import decodePolyline from 'decode-google-map-polyline'
+
 import {ApiAddressGoogle} from '../config';
 const Item = List.Item
 
 function MapResult(props) {
     const [price, setPrice] = useState(102);
     const [distance, setDistance] = useState(34);
+    const [polylineCoordinate, setPolylineCoordinate] = useState([]);
     
-    const origin = { latitude: 23.053150, longitude: 72.517100 };
-    const destination = { latitude: 23.053177, longitude: 72.517365 };
     var handleClick = () => {
         if(props.userIsConnected) {
             props.navigation.navigate('TripOverview');
@@ -25,24 +26,42 @@ function MapResult(props) {
         }
     }
 
-    // useEffect(() => {
-    //     origin = {latitude: props.positionDeparture.lat, longitude: props.positionDeparture.long}
-    //     destination = {latitude: props.positionArrival.lat, longitude: props.positionArrival.long}
-    // }, [])
+    useEffect(() => {
+        function drawItineraire() {
+            fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${props.positionDeparture.lat},${props.positionDeparture.long}&destination=${props.positionArrival.lat},${props.positionArrival.long}&key=AIzaSyAtFn7k4aG6d0U_UFKwBqRamPVAvkxuu6c`)
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                //console.log(data);
+                console.log('Data Result --------->',data.routes[0].overview_polyline.points)
+                var array = decodePolyline(data.routes[0].overview_polyline.points);
+                
+                // Modifie les objets dans le tableau array pour avoir les clefs latitude et longitude au lieu de lat et lng (pour MapView.Polyline)
+                var cpy = array.map(element => {
+                    return {latitude: element.lat, longitude: element.lng}
+                })
+
+                setPolylineCoordinate(cpy);
+                
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        }
+
+        drawItineraire();
+    }, [])
+
     return (
             <View style={styles.container}>
               <ToggleHeader navigation={props.navigation} title="MapResult" />     
-                <MapView style={styles.mapStyle} region={{latitude: 45.7615651, longitude: 4.8399114, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }}>
-                    {/* <Polyline
-                        coordinates={[
-                            { latitude: props.positionDeparture.lat, longitude: props.positionDeparture.long },
-                           // { latitude: 45.7633907, longitude: 4.8344872},
-                            { latitude: props.positionArrival.lat, longitude: props.positionArrival.long },
-                        ]}
+                <MapView style={styles.mapStyle} region={{latitude: props.positionDeparture.lat, longitude: props.positionDeparture.long, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }}>
+                    <Polyline
+                        coordinates={polylineCoordinate}
                         strokeColor="#1587d3" // fallback for when `strokeColors` is not supported by the map-provider
-
                         strokeWidth={2}
-                    /> */}
+                    />
                     <Marker
                         pinColor="#32a6ff"
                         title="Departure"
@@ -56,13 +75,6 @@ function MapResult(props) {
                         coordinate={{latitude: props.positionArrival.lat, longitude: props.positionArrival.long}}
                     />
                 </MapView>
-                <MapViewDirections 
-                    origin={{latitude: props.positionDeparture.lat, longitude: props.positionDeparture.long}}
-                    destination= {{latitude: props.positionArrival.lat, longitude: props.positionArrival.long}}
-                    apikey= {ApiAddressGoogle}
-                    strokeColor='hotpink'
-                />
-            
                 <ScrollView style={{flex: 1}} scrollEnabled={true} >
                     <View style={{marginTop: 1}}>
                         <WingBlank size='sm'>  
