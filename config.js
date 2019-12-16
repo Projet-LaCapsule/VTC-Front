@@ -1,3 +1,3 @@
-var IpAdress = '192.168.1.62';
+var IpAdress = '10.69.210.186';
 
 export default IpAdress

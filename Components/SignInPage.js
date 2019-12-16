@@ -16,7 +16,7 @@ function SignIn(props) {
             return response.json();
         })
         .then( data => {
-            console.log(data)
+            console.log('-->data',data)
             if(data.response) {
                 console.log(data)
                 AsyncStorage.setItem('userVTC', JSON.stringify(data.user)); //Enregistre user dans local storage
@@ -27,24 +27,24 @@ function SignIn(props) {
             }
         })
         .catch(err => {
-            console.log(err)
+            console.log('err fetch',err)
         })
     }
 
     return( 
         <View style={styles.container}>
             {/* Burger menu */}  
-            <ToggleHeader style={styles.toggle}     
-            navigation={props.navigation} title="HomePage"  /> 
+            <ToggleHeader style={styles.toggle} title = 'Connectez-vous'    
+            navigation={props.navigation}   /> 
        
-            <Text style={{marginBottom: 25, fontSize: 25}}> Connectez Vous </Text>
+            {/* <Text style={{marginBottom: 25, fontSize: 18}}> Connectez Vous </Text> */}
             
             <TextInput style={styles.textForm} value={email} onChangeText={e => setEmail(e)} placeholder='Email'/>
             <TextInput style={styles.textForm} value={password} onChangeText={e => setPassword(e)} placeholder='Password'/>
 
             <Button style={styles.button} onPress={() => handleSubmit()} > Se Connecter </Button>
 
-            <Text style={{marginBottom: 10}} onPress={() => props.navigation.navigate('Signup')}> Pas de compte ? </Text>
+            <Text style={{marginBottom: 10}} onPress={() => props.navigation.navigate('SignUp')}> Pas de compte ? </Text>
 
         </View>
     );

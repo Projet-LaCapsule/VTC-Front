@@ -1,12 +1,12 @@
 import React from "react";
-import { View } from "antd-mobile";
+import {Text, View} from 'react-native';
 
 const UserTrip = props => {
       return (
-    <View>
-        Hello userTrip
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+       <Text>Hello userTrip</Text> 
     </View>
-  );
+  )
     };
 
     export default UserTrip;

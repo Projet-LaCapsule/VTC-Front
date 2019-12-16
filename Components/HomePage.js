@@ -1,21 +1,18 @@
 
  import React, {useState, useEffect} from 'react';
- import { View, TextInput, StyleSheet, KeyboardAvoidingView, AsyncStorage} from 'react-native';
+ import { View, TextInput, StyleSheet, KeyboardAvoidingView, AsyncStorage, Button, Text} from 'react-native';
  import ToggleHeader from "./ToggleHeader";
  import { Tile } from 'react-native-elements';
  import imagetile from '../assets/taxi.jpg';
  import DatePicker from 'react-native-datepicker';
  import AntIcon from "react-native-vector-icons/AntDesign";
  import {connect} from 'react-redux';
- import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-
+ 
 
 
 var ladate=new Date();
 var datedujour = ladate.getDate()+"/"+(ladate.getMonth()+1)+"/"+ladate.getFullYear();
 var timeDay = ladate.getHours()+" h"+" "+ladate.getMinutes();
-
-
 
 const HomePage = props => {   
    const [departure, setDeparture] = useState('');
@@ -24,11 +21,11 @@ const HomePage = props => {
    const [time, setTime] = useState(timeDay);
 
   
-   // console.log(date)  ;
+    //console.log(date)  ;
     //console.log('console log de time',time) ;
    //console.log(timeDay);
 
-
+ // Similaire à componentDidMount et componentDidUpdate :
    useEffect(() => {
      function checkUser() {
         AsyncStorage.getItem("userVTC",
@@ -40,18 +37,18 @@ const HomePage = props => {
 
               props.signUp(userData._id, userData.first_name, userData.last_name, userData.email, userData.tel, userData.password); //enregistre les données pour redux
               props.checkStatus(true); 
-
+              
             } else {
-              console.log('No user connected');
+              console.log('No user connected'); 
               props.checkStatus(false); 
             }
           } 
         )
      }
-
      checkUser();
+      //AsyncStorage.removeItem('userVTC')
 
-     //AsyncStorage.removeItem('userVTC');
+     
    }, [])
 
       return (
@@ -82,63 +79,7 @@ const HomePage = props => {
               autoCapitalize = "none"
               onChangeText={(e) => setDeparture(e)}
           />
-          {/* <GooglePlacesAutocomplete
-                placeholder='Search'
-                minLength={2} // minimum length of text to search
-                autoFocus={false}
-                returnKeyType={'search'} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
-                keyboardAppearance={'light'} // Can be left out for default keyboardAppearance https://facebook.github.io/react-native/docs/textinput.html#keyboardappearance
-                listViewDisplayed='auto'    // true/false/undefined
-                fetchDetails={true}
-                renderDescription={row => row.description} // custom description render
-                onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
-                  console.log(data, details);
-                }}
-
-                getDefaultValue={() => ''}
-
-                query={{
-                  // available options: https://developers.google.com/places/web-service/autocomplete
-                  key: 'AIzaSyAI7Xmu1aSTDNNhWpGQzMeEYYvXe7NNwFw',
-                  language: 'fr', // language of the results
-                  types: '(cities)' // default: 'geocode'
-                }}
-
-                styles={{
-                  textInputContainer: {
-                    width: '100%'
-                  },
-                  description: {
-                    fontWeight: 'bold'
-                  },
-                  predefinedPlacesDescription: {
-                    color: '#1faadb'
-                  }
-                }}
-
-                currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
-                currentLocationLabel="Current location"
-                nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
-                GoogleReverseGeocodingQuery={{
-                  // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
-                }}
-                GooglePlacesSearchQuery={{
-                  // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
-                  rankby: 'distance',
-                  type: 'cafe'
-                }}
-                
-                GooglePlacesDetailsQuery={{
-                  // available options for GooglePlacesDetails API : https://developers.google.com/places/web-service/details
-                  fields: 'formatted_address',
-                }}
-
-                filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
-
-                debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
-              />
- */}
-
+         
           <TextInput style = {styles.input}
               underlineColorAndroid = "transparent"
               placeholder = "  Ou allez-vous ?  "
@@ -184,12 +125,13 @@ const HomePage = props => {
               placeholderTextColor = "#393e46" 
               autoCapitalize = "none"
           />
+         
 
           <Button 
               style = {styles.submitButton}
               title = "Valider"
-              onPress={()=>props.navigation.navigate('MapResult')}
-          />              
+             onPress={()=> {props.searchTravel(departure, arrival, date, time), props.navigation.navigate('MapResult')}} 
+             />              
              {/* form HomePage */}
 
              {/* footer */}
@@ -271,18 +213,18 @@ const styles = StyleSheet.create({
       dispatch({type: 'checkStatus', isConnected: isConnected})
     }
   }
-}
+} 
+ function mapStateToProps(state) {
+   console.log(state)
 
-function mapStateToProps(state) {
-  console.log(state)
-  return {
-
+   return {
+    isConnected: state.UserStatus
+    }
   }
-}
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-) (HomePage);
+  mapStateToProps,
+  mapDispatchToProps
+)(HomePage);
 
  

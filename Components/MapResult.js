@@ -18,7 +18,7 @@ function MapResult(props) {
         if(props.userIsConnected) {
             props.navigation.navigate('TripOverview');
         } else {
-            props.navigation.navigate('Signup');
+            props.navigation.navigate('SignUp');
         }
     }
 

@@ -54,11 +54,7 @@ function MapResult(props) {
             console.log(err)
         })
 
-
-
-
-
-        
+     
 
         setIsVisible(!isVisible);
         props.navigation.navigate('Home');
@@ -66,7 +62,7 @@ function MapResult(props) {
 
     return (
         <Fragment>
-            <ToggleHeader navigation={props.navigation}  />   
+            <ToggleHeader navigation={props.navigation}  title="Votre course"  />   
             <ScrollView style={{flex: 1}} scrollEnabled={true} >
                 <View style={styles.container}>
                     <View style={{marginTop: 1}}>
@@ -103,7 +99,7 @@ const styles = StyleSheet.create({
     },
     titleCard: {
        padding: 10,
-       fontSize: 22,
+       fontSize: 18,
        marginLeft: 40,
     },
     textForm: {
