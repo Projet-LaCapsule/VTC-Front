@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {View, Text, StyleSheet, TextInput, AsyncStorage} from 'react-native';
 import {connect} from 'react-redux';
 import { Button, } from '@ant-design/react-native';
-import IpAdress from '../config';
+import {IpAdress} from '../config';
 import ToggleHeader from "./ToggleHeader";
 
 function SignIn(props) {

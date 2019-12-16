@@ -6,7 +6,7 @@ import ToggleHeader from "./ToggleHeader";
 
 import { Button } from '@ant-design/react-native';
 
-import IpAdress from '../config';
+import {IpAdress} from '../config';
 
 function SignUp(props) {
     const [firstName, setFirstName] = useState('');

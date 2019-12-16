@@ -1,148 +1,287 @@
 
- import React, {useState, useEffect} from 'react';
- import { View, TextInput, StyleSheet, KeyboardAvoidingView, AsyncStorage, Button, Text} from 'react-native';
- import ToggleHeader from "./ToggleHeader";
- import { Tile } from 'react-native-elements';
- import imagetile from '../assets/taxi.jpg';
- import DatePicker from 'react-native-datepicker';
- import AntIcon from "react-native-vector-icons/AntDesign";
- import {connect} from 'react-redux';
- 
+import React, {useState, useEffect, Component} from 'react';
+import { View, Text, TextInput, Button, KeyboardAvoidingView, AsyncStorage, ScrollView, StyleSheet} from 'react-native';
+import ToggleHeader from "./ToggleHeader";
+import { Tile } from 'react-native-elements';
+import imagetile from '../assets/taxiMin.jpg';
 
+import DatePicker from 'react-native-datepicker';
+import {connect} from 'react-redux';
+import _ from 'lodash';
+import AntIcon from "react-native-vector-icons/AntDesign";
+import {ApiAddressGoogle} from '../config';
 
 var ladate=new Date();
 var datedujour = ladate.getDate()+"/"+(ladate.getMonth()+1)+"/"+ladate.getFullYear();
 var timeDay = ladate.getHours()+" h"+" "+ladate.getMinutes();
 
-const HomePage = props => {   
-   const [departure, setDeparture] = useState('');
-   const [arrival, setArrival] = useState('');
-   const [date, setDate] = useState(datedujour);
-   const [time, setTime] = useState(timeDay);
 
+
+
+
+class HomePage extends Component {   
+
+  constructor() {
+    super()
+
+    this.state = {
+      departure: '',
+      arrival: '',
+      date: datedujour,
+      hourDeparture: timeDay,
+      positionDeparture: {lat: null, long: null},
+      positionArrival: {lat: null, long: null},
+      predictionsDeparture: [],
+      predictionsArrival: []
+    }
+  }
+
+  componentDidMount() {
+    var ctx = this;
+    AsyncStorage.getItem("userVTC",
+      function(err, data) { 
+        if(data) {
+          var userData = JSON.parse(data); 
+          console.log('userData --->')
+          console.log(userData);
+
+          ctx.props.signUp(userData._id, userData.first_name, userData.last_name, userData.email, userData.tel, userData.password); //enregistre les données pour redux
+          ctx.props.checkStatus(true); 
+
+        } else {
+          console.log('No user connected');
+          this.props.checkStatus(false); 
+        }
+      } 
+    )
+  }
+
+
+  getGeocoding = async () => {
+
+    // Transformer Valeur input => 21 rue Test => 21+rue+Test
+    var transformAddressDeparture = this.state.departure.split(' ').join('+');
+    var transformAddressArrival = this.state.arrival.split(' ').join('+');
+
+
+    console.log('MY ADDRESS DEPARTURE -------------------->', transformAddressDeparture);
+    console.log('MY ADDRESS ARRIVAL -------------------->', transformAddressArrival);
+
+    fetchDeparture = async () => {
+      await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${transformAddressDeparture},+FR&key=${ApiAddressGoogle}`)
+      .then(resonse => {
+        return resonse.json();
+      })
+      .then(data => {
+        console.log('MY GOOGLE API DATAS --------->', data);
   
-    //console.log(date)  ;
-    //console.log('console log de time',time) ;
-   //console.log(timeDay);
+        console.log('TEST POSITION ---->', data.results[0].geometry.location.lat)
+        console.log('TEST POSITION ---->', data.results[0].geometry.location.lng)
+        // Crée une copy du state
+        var cpyState = {...this.state.positionDeparture};
 
- // Similaire à componentDidMount et componentDidUpdate :
-   useEffect(() => {
-     function checkUser() {
-        AsyncStorage.getItem("userVTC",
-          function(err, data) { 
-            if(data) {
-              var userData = JSON.parse(data); 
-              console.log('userData --->')
-              console.log(userData);
+        console.log('MY CPY STATE ------->', cpyState)
+        // Ajoute Latitude et Longitude dans la copy du state
+        cpyState.lat = data.results[0].geometry.location.lat,
+        cpyState.long = data.results[0].geometry.location.lng,
+        console.log('MY CPY STATE V2 ------->', cpyState)
 
-              props.signUp(userData._id, userData.first_name, userData.last_name, userData.email, userData.tel, userData.password); //enregistre les données pour redux
-              props.checkStatus(true); 
-              
-            } else {
-              console.log('No user connected'); 
-              props.checkStatus(false); 
-            }
-          } 
-        )
-     }
-     checkUser();
-      //AsyncStorage.removeItem('userVTC')
+        // modifie le state par la copy
+        this.setState({positionDeparture: cpyState});
 
-     
-   }, [])
+      
+        //setPositionDeparture({...positionDeparture, lat: data.results[0].geometry.location.lat, long: data.results[0].geometry.location.lng })
 
-      return (
+        // setPositionDeparture(prevState => {
+        //   // Object.assign would also work
+        //   return {...prevState, ...cpyState};
+        // });
 
-        <KeyboardAvoidingView behavior="padding" style={{flex: 1}} enabled> 
-      <View style={{width: '100%', height: '100%',flex:1, alignItems: 'center', margin: 0}}>  
+        console.log('MY STATE ------->', this.state.positionDeparture)
 
-      {/* Burger menu */}  
-       <ToggleHeader  
-        style={styles.toggle}     
-        navigation={props.navigation} title="HomePage"  /> 
-       
-       {/* image */}  
-        <Tile 
-        titleStyle={{ color: 'black', fontSize: 40}}
-        imageSrc={imagetile}
-        captionStyle={{ opacity: 1 }}
-        title="Ou souhaitez-vous aller ?"
-        featured          
-        />
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    }
 
-        {/* form HomePage */}
-         <TextInput style = {styles.input}
-              style= {{ marginTop: 10 }}
-              underlineColorAndroid = "transparent"
-              placeholder = "Ma position"
-              placeholderTextColor = "#393e46"
-              autoCapitalize = "none"
-              onChangeText={(e) => setDeparture(e)}
-          />
-         
-          <TextInput style = {styles.input}
-              underlineColorAndroid = "transparent"
-              placeholder = "  Ou allez-vous ?  "
-              placeholderTextColor = "#393e46"
-              autoCapitalize = "none"
-              onChangeText={(e) => setArrival(e)}
-          />
+    fetchArrival = async () => {
+       await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${transformAddressArrival},+FR&key=${ApiAddressGoogle}`)
+      .then(resonse => {
+        return resonse.json();
+      })
+      .then(data => {
+  
+        console.log('TEST POSITION ---->', data.results[0].geometry.location.lat)
+        console.log('TEST POSITION ---->', data.results[0].geometry.location.lng)
+        var cpyState = {...this.state.positionArrival};
+
+        console.log('MY CPY STATE ------->', cpyState)
+        cpyState.lat = data.results[0].geometry.location.lat,
+        cpyState.long = data.results[0].geometry.location.lng,
+        console.log('MY CPY STATE V2 ------->', cpyState)
+
+        this.setState({positionArrival: cpyState});
+
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    }
+    
+    await fetchDeparture()
+    await fetchArrival()
+
+    //Envoie dans redux les adresses, positions, date, heure de la course
+    await this.props.searchTravel(this.state.departure, this.state.arrival, this.state.date, this.state.hourDeparture, this.state.positionDeparture.lat, this.state.positionDeparture.long, this.state.positionArrival.lat, this.state.positionArrival.long);
+
+    this.props.navigation.navigate('MapResult');
+   }
+
+   onChangeDeparture = async (destination) => {
+     // Change la valeur de l'input des que l'on ecrit
+        this.setState({departure: destination});
+
+        apiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?key=${ApiAddressGoogle}&input=${destination}&location=45.7711578, 4.8527353&radius=200000`;
+        try {
+          const result = await fetch(apiUrl);
+          const json = await result.json();
+          console.log(json);
+          //Stocke dans un tableau toutes les predictions de l'autocomplete
+          this.setState({predictionsDeparture: json.predictions})
+        } catch(err) {
+          console.log(err);
+        }
+   }
+
+   onChangeDestination = async (destination) => {
+     // Change la valeur de l'input des que l'on ecrit
+      this.setState({arrival: destination});
+      apiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?key=${ApiAddressGoogle}&input=${destination}&location=45.7711578, 4.8527353&radius=200000`;
+      try {
+        const result = await fetch(apiUrl);
+        const json = await result.json();
+        console.log(json);
+        //Stocke dans un tableau toutes les predictions de l'autocomplete
+        this.setState({predictionsArrival: json.predictions})
+      } catch(err) {
+        console.log(err);
+      }
+
+   }
+
+
+  render() {
+    // Permet de crée un element text pour chaque predictions stocker dans le tableau predictionsDeparture
+    const predictionsRenderDeparture = this.state.predictionsDeparture.map(predictions => (
+      <Text style={styles.predictionsStyle} onPress={() => this.setState({departure: predictions.description, predictionsDeparture: []})} key={predictions.id}>  {predictions.description} </Text>
+    ))
+
+    const predictionsRenderArrival = this.state.predictionsArrival.map(predictions => (
+      <Text style={styles.predictionsStyle} onPress={() => this.setState({arrival: predictions.description, predictionsArrival: []})} key={predictions.id}>  {predictions.description} </Text>
+    ))
+
+    return (
+      // Keyboard params
+      <KeyboardAvoidingView behavior="padding" style={{flex: 1}} enabled > 
+        <ScrollView style={{flex: 1}} scrollEnabled={true} >
+
+        <View style={{width: '100%', height: '100%',flex:1, alignItems: 'center', margin: 0}}>  
+          {/* Burger menu */}  
+          <ToggleHeader  
+            style={styles.toggle}     
+            navigation={this.props.navigation} title="HomePage"  /> 
           
-          <DatePicker
-            style = {styles.datepicker}
-            date={date}  //initial date from state
-            mode="datetime" //The enum of date, datetime and time
-            placeholder="select date"
-            format="DD-MM-YYYY"
-            minDate="01-01-2019"
-            maxDate="01-01-2021"
-            confirmBtnText="Confirm"
-            cancelBtnText="Cancel"
-            customStyles={{
-            dateIcon: {
-              position: 'absolute',
-              left: 0,
-              top: 4,
-              marginLeft: 0
-            },
-            dateInput: {
-              marginLeft: 36
-            }
-          }}
-          onDateChange={(dateChange, timeChange) => { 
-            [setDate(dateChange),setTime(timeChange) ]
-            //console.log(timeChange);
-            var timeNewDay = timeChange.getHours()+" h"+" "+timeChange.getMinutes();
-            //console.log(timeNewDay);
-            timeNewDay.toString();
-            setTime(timeNewDay);
+          {/* image */}  
             
-          }}
-        />
-         <TextInput style = {styles.input}
-              underlineColorAndroid = "transparent"
-              value = {`${time}`} 
-              placeholderTextColor = "#393e46" 
-              autoCapitalize = "none"
-          />
-         
+            <Tile 
+              titleStyle={{ color: 'black', fontSize: 40}}
+              imageSrc={imagetile}
+              captionStyle={{ opacity: 1 }}
+              title="Ou souhaitez-vous aller ?"
+              featured          
+            />
 
-          <Button 
-              style = {styles.submitButton}
-              title = "Valider"
-             onPress={()=> {props.searchTravel(departure, arrival, date, time), props.navigation.navigate('MapResult')}} 
-             />              
-             {/* form HomePage */}
+              <TextInput style = {styles.input}
+                underlineColorAndroid = "transparent"
+                placeholder = "Ma position"
+                placeholderTextColor = "#393e46"
+                autoCapitalize = "none"
+                value= {this.state.departure}
+                onChangeText={(e) => this.onChangeDeparture(e)}
+              />
+          
+                {predictionsRenderDeparture}
+              <TextInput style = {styles.input}
+                underlineColorAndroid = "transparent"
+                placeholder = "  Ou allez-vous ?  "
+                placeholderTextColor = "#393e46"
+                autoCapitalize = "none"
+                value= {this.state.arrival}
+                onChangeText={(e) => this.onChangeDestination(e)}
+              />
+              {predictionsRenderArrival}
+              <DatePicker
+                style = {styles.datepicker}
+                date={this.state.date}  //initial date from state
+                mode="datetime" //The enum of date, datetime and time
+                placeholder="select date"
+                format="DD-MM-YYYY"
+                minDate="01-01-2019"
+                maxDate="01-01-2021"
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                customStyles={{
+                  dateIcon: {
+                    position: 'absolute',
+                    left: 0,
+                    top: 4,
+                    marginLeft: 0
+                  },
+                  dateInput: {
+                    marginLeft: 36
+                  }
+                }}
+                onDateChange={(dateChange, timeChange) => { 
+                  this.setState({date: dateChange, hourDeparture: timeChange})
+                  console.log(timeChange);
+                  var timeNewDay = timeChange.getHours()+" h"+" "+timeChange.getMinutes();
+                  console.log(timeNewDay);
+                  timeNewDay.toString();
+                  this.setState({hourDeparture: timeNewDay})
+                }}
+              />
 
-             {/* footer */}
-            <View style={{ flex: 1, backgroundColor: '#222831', alignItems: 'center', justifyContent: 'center',width: '100%', maxHeight: 60, marginTop: 10 }}>
-            <AntIcon name="car" color="#00adb5" size={35} />
-            <Text style = {{color: 'white', fontSize:10}}> Choisissez votre course </Text>
-           </View>
-      </View>  
-        </KeyboardAvoidingView>       
+                <TextInput style = {styles.input}
+                  underlineColorAndroid = "transparent"
+                  value = {`${this.state.hourDeparture}`}
+                  placeholderTextColor = "#393e46" 
+                  autoCapitalize = "none"
+                />
+          
+
+                <Button 
+                  style = {styles.submitButton}
+                  title = "Valider"
+                  onPress={()=> {this.getGeocoding()}}
+                />              
+              
+
+              {/* footer */}
+              <View style={{ flex: 1, backgroundColor: '#222831', alignItems: 'center', justifyContent: 'center',width: '100%', maxHeight: 60, marginTop: 10 }}>
+                <AntIcon name="car" color="#00adb5" size={35} />
+                <Text style = {{color: 'white', fontSize:10}}> Choisissez votre course </Text>
+            </View>
+
+          </View>   
+          </ScrollView>
+      </KeyboardAvoidingView>
     );
   } 
+}
+
+
+
 
 const styles = StyleSheet.create({
     toggle: {
@@ -166,6 +305,7 @@ const styles = StyleSheet.create({
       padding: 10,
       borderRadius: 3,
       textAlign:'center',
+      marginTop: 10
    },
    submitButton: {
       width: '70%',
@@ -179,20 +319,35 @@ const styles = StyleSheet.create({
       textAlign:'center',
       
    },
+      predictionsStyle: {
+      backgroundColor: 'white',
+      padding: 8,
+      fontSize: 16,
+      borderWidth: 0.5,
+      width: '70%'
+    }
    
  });
   
 
  function mapDispatchToProps(dispatch) {
   return {
-    searchTravel: function(departure, arrival, date, time) {
+    searchTravel: function(departure, arrival, date, hourDeparture, latDeparture, longDeparture, latArrival, longArrival) {
         dispatch(
           {
             type: 'searchTravel',
             departure: departure,
             arrival: arrival,
             date: date,
-            time: time
+            hourDeparture: hourDeparture,
+            positionDeparture: {
+              lat: latDeparture,
+              long: longDeparture
+            },
+            positionArrival: {
+              lat: latArrival,
+              long: longArrival
+            }
           }
         )
     },
