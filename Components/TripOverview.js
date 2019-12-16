@@ -7,7 +7,7 @@ import ToggleHeader from "./ToggleHeader"
 
 import { Card, WingBlank, Button, InputItem } from '@ant-design/react-native';
 
-import IpAdress from "../config";
+import {IpAdress} from "../config";
 function MapResult(props) {
     const [isVisible, setIsVisible] = useState(false);
 
@@ -22,6 +22,7 @@ function MapResult(props) {
             hourdeparture: props.hourdeparture,
             price: props.price,
             distance: props.distance,
+            hourDeparture: props.hourDeparture,
             time: props.time
           });
 
@@ -37,7 +38,7 @@ function MapResult(props) {
             console.log('Data ---->')
             console.log(data)
 
-            fetch(`http://${IpAdress}:3000/confirmTravel?id=${props.idUSer}&idTrip=${data.trip._id}&departure=${props.departure}&arrival=${props.arrival}&date=${props.date}&time=${props.time}&distance=${props.distance}&price=${props.price}`)
+            fetch(`http://${IpAdress}:3000/confirmTravel?id=${props.idUSer}&idTrip=${data.trip._id}`)
             .then(response => {
                 return response.json();
             })
@@ -55,11 +56,6 @@ function MapResult(props) {
         })
 
 
-
-
-
-        
-
         setIsVisible(!isVisible);
         props.navigation.navigate('Home');
     }
@@ -76,9 +72,10 @@ function MapResult(props) {
                                 <Card.Body>
                                     <InputItem style={styles.textForm} value={props.departure} editable={false}> Départ : </InputItem>
                                     <InputItem style={styles.textForm} value={props.arrival} editable={false}> Arrivé : </InputItem>
-                                    <InputItem style={styles.textForm} value={`${props.prix} €`} editable={false}> Prix : </InputItem>
+                                    <InputItem style={styles.textForm} value={`${props.price} €`} editable={false}> Prix : </InputItem>
                                     <InputItem style={styles.textForm} value={`${props.distance} Km`} editable={false}> Km : </InputItem>
-                                    <InputItem style={styles.textForm} value={props.date} extra={props.time} editable={false}> Date : </InputItem>
+                                    <InputItem style={styles.textForm} value={`${props.time}`} editable={false}> Temps : </InputItem>
+                                    <InputItem style={styles.textForm} value={props.date} extra={props.hourDeparture} editable={false}> Date : </InputItem>
                                 </Card.Body>
                                 <Card.Footer 
                                     content={<Button style={{width: 70, height: 40}}> <Ionicons name='md-arrow-back' size={17} color='black'/> </Button>}
@@ -135,8 +132,8 @@ const styles = StyleSheet.create({
         price: state.Travel.price,
         distance: state.Travel.distance,
         date: state.Travel.date,
+        hourDeparture: state.Travel.hourDeparture,
         time: state.Travel.time
-
     }
   }
   

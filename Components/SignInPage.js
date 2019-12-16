@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 
 import { Button, } from '@ant-design/react-native';
 
-import IpAdress from '../config';
+import {IpAdress} from '../config';
 
 function SignIn(props) {
     const [email, setEmail] = useState('');
