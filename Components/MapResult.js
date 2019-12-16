@@ -28,7 +28,7 @@ function MapResult(props) {
 
     useEffect(() => {
         function drawItineraire() {
-            fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${props.positionDeparture.lat},${props.positionDeparture.long}&destination=${props.positionArrival.lat},${props.positionArrival.long}&key=AIzaSyAtFn7k4aG6d0U_UFKwBqRamPVAvkxuu6c`)
+            fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${props.positionDeparture.lat},${props.positionDeparture.long}&destination=${props.positionArrival.lat},${props.positionArrival.long}&key=${ApiAddressGoogle}`)
             .then(response => {
                 return response.json();
             })
