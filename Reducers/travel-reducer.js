@@ -8,7 +8,7 @@ export default function Travel(travel = {}, action) {
         cpyTravel.departure = action.departure;
         cpyTravel.arrival = action.arrival;
         cpyTravel.date = action.date;
-        cpyTravel.time = action.time;
+        cpyTravel.hourDeparture = action.hourDeparture;
         cpyTravel.positionDeparture = {
             lat: action.positionDeparture.lat,
             long: action.positionDeparture.long
@@ -26,7 +26,8 @@ export default function Travel(travel = {}, action) {
         console.log('Travel  {} ----->', travel);
         var cpyTravel = {...travel};
         cpyTravel.price = action.price;
-        cpyTravel.distance = action.distance
+        cpyTravel.distance = action.distance;
+        cpyTravel.time = action.time
 
         console.log('ChooseTravel ---->', cpyTravel);
         return cpyTravel

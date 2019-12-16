@@ -15,7 +15,8 @@ const Item = List.Item
 
 function MapResult(props) {
     const [price, setPrice] = useState(102);
-    const [distance, setDistance] = useState(34);
+    const [distance, setDistance] = useState(null);
+    const [timeTravel, setTimeTravel] = useState(null);
     const [polylineCoordinate, setPolylineCoordinate] = useState([]);
     
     var handleClick = () => {
@@ -35,6 +36,8 @@ function MapResult(props) {
             .then(data => {
                 //console.log(data);
                 console.log('Data Result --------->',data.routes[0].overview_polyline.points)
+
+                // decode tout les points retourné par l'api
                 var array = decodePolyline(data.routes[0].overview_polyline.points);
                 
                 // Modifie les objets dans le tableau array pour avoir les clefs latitude et longitude au lieu de lat et lng (pour MapView.Polyline)
@@ -42,7 +45,17 @@ function MapResult(props) {
                     return {latitude: element.lat, longitude: element.lng}
                 })
 
+                // Recupere que la valeur de la distance (13 Km => 13)
+                var distanceItineraire = data.routes[0].legs[0].distance.text;
+                distanceItineraire.split(' ');
+
+                // Recupere le temps pour aller du point A au point B
+                var tempsItineraire = data.routes[0].legs[0].duration.text;
+
+                //Met a jour les states
                 setPolylineCoordinate(cpy);
+                setDistance(distanceItineraire[0]);
+                setTimeTravel(tempsItineraire);
                 
             })
             .catch(err => {
@@ -84,15 +97,15 @@ function MapResult(props) {
                                         <Item extra={ <Ionicons name='md-radio-button-on' size={20} color='#32a6ff'/>}> {props.departure} </Item>
                                         <Item extra={ <Ionicons name='md-radio-button-on' size={20} color='#ea1919'/>}> {props.arrival} </Item>
                                         <View style={{flex: 1, flexDirection: 'row', justifyContent: "space-between"}}>
-                                            <Text style={styles.textForm}> {price} Km</Text>
-                                            <Text style={styles.textFormPrice}> {distance} €</Text>          
+                                            <Text style={styles.textForm}> {distance} Km</Text>
+                                            <Text style={styles.textFormPrice}> {price} €</Text>          
                                         </View>
                                         
                                     </List>
                                 </Card.Body>
                                 <Card.Footer 
                                     content={<Button style={{width: 70, height: 40}}> <Ionicons name='md-arrow-back' size={17} color='black'/> </Button>}
-                                    extra={<Button style={{width: 120, height: 40, marginLeft: 40, backgroundColor: '#7d35f2', borderColor: '#7d35f2'}} type='primary' onPress={() => {props.handleClickChoose(price, distance); handleClick()} }> Choisir </Button>}
+                                    extra={<Button style={{width: 120, height: 40, marginLeft: 40, backgroundColor: '#7d35f2', borderColor: '#7d35f2'}} type='primary' onPress={() => {props.handleClickChoose(price, distance, timeTravel); handleClick()} }> Choisir </Button>}
                                 />
                             </Card>
                         </WingBlank>     
@@ -124,9 +137,9 @@ const styles = StyleSheet.create({
 
   function mapDispatchToProps(dispatch) {
     return {
-      handleClickChoose: function(price, distance) {
+      handleClickChoose: function(price, distance, time) {
 
-          dispatch({type: 'chooseTravel', price: price, distance: distance })
+          dispatch({type: 'chooseTravel', price: price, distance: distance, time: time })
       }
     }
   }
@@ -136,7 +149,7 @@ const styles = StyleSheet.create({
         departure: state.Travel.departure,
         arrival: state.Travel.arrival,
         date: state.Travel.data,
-        time: state.Travel.time,
+        hourDeparture: state.Travel.hourDeparture,
         positionDeparture: {
             lat: state.Travel.positionDeparture.lat,
             long: state.Travel.positionDeparture.long

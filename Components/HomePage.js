@@ -9,8 +9,6 @@ import {connect} from 'react-redux';
 import _ from 'lodash';
 
 import {ApiAddressGoogle} from '../config';
-import { render } from 'react-dom';
-
 
 var ladate=new Date();
 var datedujour = ladate.getDate()+"/"+(ladate.getMonth()+1)+"/"+ladate.getFullYear();
@@ -245,7 +243,7 @@ class HomePage extends Component {
       departure: '',
       arrival: '',
       date: datedujour,
-      time: timeDay,
+      hourDeparture: timeDay,
       positionDeparture: {lat: null, long: null},
       positionArrival: {lat: null, long: null},
       predictionsDeparture: [],
@@ -275,6 +273,7 @@ class HomePage extends Component {
 
   getGeocoding = async () => {
 
+    // Transformer Valeur input => 21 rue Test => 21+rue+Test
     var transformAddressDeparture = this.state.departure.split(' ').join('+');
     var transformAddressArrival = this.state.arrival.split(' ').join('+');
 
@@ -283,7 +282,7 @@ class HomePage extends Component {
     console.log('MY ADDRESS ARRIVAL -------------------->', transformAddressArrival);
 
     fetchDeparture = async () => {
-      await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${transformAddressDeparture},+Lyon,+FR&key=${ApiAddressGoogle}`)
+      await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${transformAddressDeparture},+FR&key=${ApiAddressGoogle}`)
       .then(resonse => {
         return resonse.json();
       })
@@ -292,13 +291,16 @@ class HomePage extends Component {
   
         console.log('TEST POSITION ---->', data.results[0].geometry.location.lat)
         console.log('TEST POSITION ---->', data.results[0].geometry.location.lng)
+        // Crée une copy du state
         var cpyState = {...this.state.positionDeparture};
 
         console.log('MY CPY STATE ------->', cpyState)
+        // Ajoute Latitude et Longitude dans la copy du state
         cpyState.lat = data.results[0].geometry.location.lat,
         cpyState.long = data.results[0].geometry.location.lng,
         console.log('MY CPY STATE V2 ------->', cpyState)
 
+        // modifie le state par la copy
         this.setState({positionDeparture: cpyState});
 
       
@@ -344,18 +346,22 @@ class HomePage extends Component {
     await fetchDeparture()
     await fetchArrival()
 
-    await this.props.searchTravel(this.state.departure, this.state.arrival, this.state.date, this.state.time, this.state.positionDeparture.lat, this.state.positionDeparture.long, this.state.positionArrival.lat, this.state.positionArrival.long);
+    //Envoie dans redux les adresses, positions, date, heure de la course
+    await this.props.searchTravel(this.state.departure, this.state.arrival, this.state.date, this.state.hourDeparture, this.state.positionDeparture.lat, this.state.positionDeparture.long, this.state.positionArrival.lat, this.state.positionArrival.long);
 
     this.props.navigation.navigate('MapResult');
    }
 
    onChangeDeparture = async (destination) => {
+     // Change la valeur de l'input des que l'on ecrit
         this.setState({departure: destination});
+
         apiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?key=${ApiAddressGoogle}&input=${destination}&location=45.7711578, 4.8527353&radius=200000`;
         try {
           const result = await fetch(apiUrl);
           const json = await result.json();
           console.log(json);
+          //Stocke dans un tableau toutes les predictions de l'autocomplete
           this.setState({predictionsDeparture: json.predictions})
         } catch(err) {
           console.log(err);
@@ -363,12 +369,14 @@ class HomePage extends Component {
    }
 
    onChangeDestination = async (destination) => {
+     // Change la valeur de l'input des que l'on ecrit
       this.setState({arrival: destination});
       apiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?key=${ApiAddressGoogle}&input=${destination}&location=45.7711578, 4.8527353&radius=200000`;
       try {
         const result = await fetch(apiUrl);
         const json = await result.json();
         console.log(json);
+        //Stocke dans un tableau toutes les predictions de l'autocomplete
         this.setState({predictionsArrival: json.predictions})
       } catch(err) {
         console.log(err);
@@ -378,6 +386,7 @@ class HomePage extends Component {
 
 
   render() {
+    // Permet de crée un element text pour chaque predictions stocker dans le tableau predictionsDeparture
     const predictionsRenderDeparture = this.state.predictionsDeparture.map(predictions => (
       <Text style={styles.predictionsStyle} onPress={() => this.setState({departure: predictions.description, predictionsDeparture: []})} key={predictions.id}>  {predictions.description} </Text>
     ))
@@ -387,6 +396,7 @@ class HomePage extends Component {
     ))
 
     return (
+      // Keyboard params
     <KeyboardAvoidingView behavior="padding" style={{flex: 1}} enabled> 
       <ScrollView style={{flex: 1}} scrollEnabled={true} >
 
@@ -447,17 +457,17 @@ class HomePage extends Component {
               }
             }}
             onDateChange={(dateChange, timeChange) => { 
-              this.setState({date: dateChange, time: timeChange})
+              this.setState({date: dateChange, hourDeparture: timeChange})
               console.log(timeChange);
               var timeNewDay = timeChange.getHours()+" h"+" "+timeChange.getMinutes();
               console.log(timeNewDay);
               timeNewDay.toString();
-              this.setState({time: timeNewDay})
+              this.setState({hourDeparture: timeNewDay})
             }}
           />
           <TextInput style = {{height: 40, margin: 10, borderColor: 'grey', borderWidth: 0.5,width:'40%',backgroundColor:'white',opacity:0.8}}
                 underlineColorAndroid = "transparent"
-                value = {`${this.state.time}`}
+                value = {`${this.state.hourDeparture}`}
                 placeholderTextColor = "black"
                 autoCapitalize = "none"
             />
@@ -498,14 +508,14 @@ const styles = StyleSheet.create({
 
  function mapDispatchToProps(dispatch) {
   return {
-    searchTravel: function(departure, arrival, date, time, latDeparture, longDeparture, latArrival, longArrival) {
+    searchTravel: function(departure, arrival, date, hourDeparture, latDeparture, longDeparture, latArrival, longArrival) {
         dispatch(
           {
             type: 'searchTravel',
             departure: departure,
             arrival: arrival,
             date: date,
-            time: time,
+            hourDeparture: hourDeparture,
             positionDeparture: {
               lat: latDeparture,
               long: longDeparture
