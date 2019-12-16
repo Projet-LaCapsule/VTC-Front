@@ -5,11 +5,8 @@ import MapView , {Marker, Polyline} from 'react-native-maps';
 import {Ionicons} from '@expo/vector-icons';
 import {connect} from 'react-redux';
 import ToggleHeader from "./ToggleHeader";
-import MapViewDirections from 'react-native-maps-directions';
 import { Card, WingBlank, List, Button } from '@ant-design/react-native';
-
 import decodePolyline from 'decode-google-map-polyline'
-
 import {ApiAddressGoogle} from '../config';
 const Item = List.Item
 
@@ -23,7 +20,7 @@ function MapResult(props) {
         if(props.userIsConnected) {
             props.navigation.navigate('TripOverview');
         } else {
-            props.navigation.navigate('Signup');
+            props.navigation.navigate('SignUp');
         }
     }
 
@@ -68,8 +65,10 @@ function MapResult(props) {
 
     return (
             <View style={styles.container}>
+
               <ToggleHeader navigation={props.navigation} title="MapResult" />     
                 <MapView style={styles.mapStyle} region={{latitude: props.positionDeparture.lat, longitude: props.positionDeparture.long, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }}>
+
                     <Polyline
                         coordinates={polylineCoordinate}
                         strokeColor="#1587d3" // fallback for when `strokeColors` is not supported by the map-provider

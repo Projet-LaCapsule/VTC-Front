@@ -6,7 +6,8 @@ import HamburgerMenu from "./HamburgerMenu";
 const ToggleHeader = props => {
     
   return (
-    <Header
+    <Header 
+     backgroundColor = '#222831'
       leftComponent={<HamburgerMenu navigation={props.navigation} />}
       centerComponent={{
         text: props.title,
@@ -16,4 +17,4 @@ const ToggleHeader = props => {
     />
   );
 };
-export default ToggleHeader;
+export default ToggleHeader;   

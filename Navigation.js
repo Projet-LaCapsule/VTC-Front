@@ -1,49 +1,30 @@
-import { createAppContainer } from 'react-navigation';
-import MapResult from './Components/MapResult';
-import HomePage from './Components/HomePage';
-import TripOverview from './Components/TripOverview';
-import SignIn from './Components/SignInPage';
-import SignUp from './Components/SignUpPage';
+import React, {Fragment} from 'react';
+import NavigationConnected from './NavigationConnected';
+import NavigationNotConnected from './NavigationNotConnected';
+import {connect} from 'react-redux';
+import Travel from './Reducers/travel-reducer';
+import User from './Reducers/user-reducer';
+import UserStatus from './Reducers/userStatus-reducer';
+import { ShadowPropTypesIOS } from 'react-native';
 
-import SettingPage from './Components/SettingsPage';
-import { createStackNavigator } from 'react-navigation-stack';
-import { createDrawerNavigator} from 'react-navigation-drawer';
+ function Navigation(props) {  
+     if(props.isConnected) {
+         return (
+            <NavigationConnected/>         
+        );
+     } else {
+        return (
+            <NavigationNotConnected/>         
+        );
 
-const AppNavigator = createDrawerNavigator({
-  Home: {
-    screen : HomePage
-  },
-  MapResult: {
-    screen: MapResult
-  },
-  TripOverview: {
-    screen: TripOverview
-},
-}); 
+     }
+}
 
-
-var StackNavigator = createStackNavigator({
-  DrawerNavigationApp: {
-    screen: AppNavigator,
-    navigationOptions: () => ({
-        header: null
-    })
-},
-
-  Signup: {
-      screen: SignUp,
-      navigationOptions: () => ({
-          header: null
-      })
-  },
-  Signin: {
-    screen: SignIn,
-    navigationOptions: () => ({
-        header: null
-    })
-},
-  SettingPage: SettingPage,
-
-})
-
-export default Navigation = createAppContainer(StackNavigator)
+function mapStateToProps(state) {
+  return { isConnected: state.UserStatus }
+}
+  
+export default connect(
+  mapStateToProps, 
+  null
+)(Navigation);

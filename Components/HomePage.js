@@ -1,236 +1,21 @@
+
 import React, {useState, useEffect, Component} from 'react';
-import { View, Text, TextInput, StyleSheet, KeyboardAvoidingView, AsyncStorage, ScrollView} from 'react-native';
+import { View, Text, TextInput, Button, KeyboardAvoidingView, AsyncStorage, ScrollView, StyleSheet} from 'react-native';
 import ToggleHeader from "./ToggleHeader";
 import { Tile } from 'react-native-elements';
 import imagetile from '../assets/taxiMin.jpg';
-import { Button } from '@ant-design/react-native';
+
 import DatePicker from 'react-native-datepicker';
 import {connect} from 'react-redux';
 import _ from 'lodash';
-
+import AntIcon from "react-native-vector-icons/AntDesign";
 import {ApiAddressGoogle} from '../config';
 
 var ladate=new Date();
 var datedujour = ladate.getDate()+"/"+(ladate.getMonth()+1)+"/"+ladate.getFullYear();
 var timeDay = ladate.getHours()+" h"+" "+ladate.getMinutes();
 
-// const HomePage = props => {   
-//   const [departure, setDeparture] = useState('');
-//   const [arrival, setArrival] = useState('');
-//   const [date, setDate] = useState(datedujour);
-//   const [time, setTime] = useState(timeDay);
-//   const [positionDeparture, setPositionDeparture] = useState({lat: null, long: null})
-//   const [positionArrival, setPositionArrival] = useState({lat: '', long: ''})
 
-//   const [predictions, setPredictions] = useState([]);
-
-//    useEffect(() => {
-//      function checkUser() {
-//         AsyncStorage.getItem("userVTC",
-//           function(err, data) { 
-//             if(data) {
-//               var userData = JSON.parse(data); 
-//               console.log('userData --->')
-//               console.log(userData);
-
-//               props.signUp(userData._id, userData.first_name, userData.last_name, userData.email, userData.tel, userData.password); //enregistre les données pour redux
-//               props.checkStatus(true); 
-
-//             } else {
-//               console.log('No user connected');
-//               props.checkStatus(false); 
-//             }
-//           } 
-//         )
-//      }
-
-//      checkUser();
-//      //AsyncStorage.removeItem('userVTC');
-//    }, [])   
-
-//    var getGeocoding = async () => {
-
-//     var transformAddressDeparture = departure.split(' ').join('+');
-//     var transformAddressArrival = arrival.split(' ').join('+');
-
-
-//     console.log('MY ADDRESS DEPARTURE -------------------->', transformAddressDeparture);
-//     console.log('MY ADDRESS ARRIVAL -------------------->', transformAddressArrival);
-
-//      var fetchDeparture = async () => {
-//       await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${transformAddressDeparture},+Lyon,+FR&key=${ApiAddressGoogle}`)
-//       .then(resonse => {
-//         return resonse.json();
-//       })
-//       .then(data => {
-//         console.log('MY GOOGLE API DATAS --------->', data);
-  
-//         console.log('TEST POSITION ---->', data.results[0].geometry.location.lat)
-//         console.log('TEST POSITION ---->', data.results[0].geometry.location.lng)
-//         var cpyState = {...positionDeparture};
-
-//         console.log('MY CPY STATE ------->', cpyState)
-//         cpyState.lat = data.results[0].geometry.location.lat,
-//         cpyState.long = data.results[0].geometry.location.lng,
-//         console.log('MY CPY STATE V2 ------->', cpyState)
-
-//         setPositionDeparture(cpyState)
-
-      
-//         //setPositionDeparture({...positionDeparture, lat: data.results[0].geometry.location.lat, long: data.results[0].geometry.location.lng })
-
-//         // setPositionDeparture(prevState => {
-//         //   // Object.assign would also work
-//         //   return {...prevState, ...cpyState};
-//         // });
-
-//         console.log('MY STATE ------->', positionDeparture)
-
-//       })
-//       .catch(err => {
-//         console.log(err)
-//       })
-//     }
-    
-//     await fetchDeparture()
-
-//   //  await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${transformAddressArrival},+Lyon,+FR&key=${ApiAddressGoogle}`)
-//   //   .then(resonse => {
-//   //     return resonse.json();
-//   //   })
-//   //   .then(data => {
-//   //     console.log(data);
-
-//   //     setPositionArrival({
-//   //       lat: data.results[0].geometry.location.lat,
-//   //       long: data.results[0].geometry.location.lng,
-//   //     })
-
-//   //   })
-//   //   .catch(err => {
-//   //     console.log(err)
-//   //   })
-//     await props.searchTravel(departure, arrival, date, time, positionDeparture.lat, positionDeparture.long, positionArrival.lat, positionArrival.long);
-//     //await props.searchTravel(departure, arrival, date, time, '123123', longDeparture, latArrival, longArrival);
-
-//     //props.navigation.navigate('MapResult');
-//    }
-
-//    var onChangeDeparture = async (destination) => {
-//         setDeparture(destination);
-//         apiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?key=${ApiAddressGoogle}&input=${destination}&location=45.7711578, 4.8527353&radius=200000`;
-//         try {
-//           const result = await fetch(apiUrl);
-//           const json = await result.json();
-//           console.log(json);
-//           setPredictions(json.predictions);
-//         } catch(err) {
-//           console.log(err);
-//         }
-//    }
-
-//   //  const testes = [
-//   //   { id: 'azeazeazeazzeaze',
-//   //     description: '12 rue zerzerzer'
-//   //   },
-//   //   { id: 'azeazeazeazaeaze',
-//   //     description: '12 rue zerzerzer'
-//   //   },
-//   //   { id: 'azeazeazeaezeaze',
-//   //     description: '12 rue zerzerzer'
-//   //   }
-//   //  ]
-
-
-//    const predictionsRenderDeparture = predictions.map(predictions => (
-//         <Text style={styles.predictionsStyle} onPress={() => setDeparture(predictions.description)} key={predictions.id}>  {predictions.description} </Text>
-//     ))
-
-//       return (
-//       <KeyboardAvoidingView behavior="padding" style={{flex: 1}} enabled> 
-//         <View style={{width: '100%', height: '100%',flex:1, alignItems: 'center', margin: 0}}>  
-
-//           {/* Burger menu */}  
-//           <ToggleHeader  
-//             style={styles.toggle}     
-//             navigation={props.navigation} title="HomePage"  /> 
-          
-//           {/* image */}  
-//             {/* <Tile
-//             imageSrc={imagetile}
-//             captionStyle={{ opacity: 1 }}
-//             title="Ou souhaitez-vous aller ?"
-//             featured          
-//             /> */}
-
-//             {/* form HomePage */}
-//             <TextInput style = {{height: 40, marginTop: 10, borderColor: 'grey', borderWidth: 0.5,width:'70%',backgroundColor:'white',opacity:0.8}}
-//                 //  underlineColorAndroid = "transparent"
-//                   placeholder = "Ou êtes vous ?  "
-//                   placeholderTextColor = "black"
-//                   //autoCapitalize = "none"
-//                   value= {departure}
-//                   onChangeText={(e) => onChangeDeparture(e)}
-//               />
-//                 {predictionsRenderDeparture}
-//               <TextInput style = {{height: 40, margin: 10, borderColor: 'grey', borderWidth: 0.5,width:'70%',backgroundColor:'white',opacity:0.8}}
-//                   //underlineColorAndroid = "transparent"
-//                   placeholder = "  Ou souhaitez-vous aller ?  "
-//                   placeholderTextColor = "black"
-//                  // autoCapitalize = "none"
-//                   onChangeText={(e) => setArrival(e)}
-//               />
-              
-//               <DatePicker
-//               style={{width: 200}}
-//               date={date}  //initial date from state
-//               //time={time}
-//               mode="datetime" //The enum of date, datetime and time
-//               placeholder="select date"
-//               format="DD-MM-YYYY"
-//               minDate="01-01-2019"
-//               maxDate="01-01-2021"
-//               confirmBtnText="Confirm"
-//               cancelBtnText="Cancel"
-//               customStyles={{
-//                 dateIcon: {
-//                   position: 'absolute',
-//                   left: 0,
-//                   top: 4,
-//                   marginLeft: 0
-//                 },
-//                 dateInput: {
-//                   marginLeft: 36
-//                 }
-//               }}
-//               onDateChange={(dateChange, timeChange) => { 
-//                 [setDate(dateChange),setTime(timeChange) ]
-//                 console.log(timeChange);
-//                 var timeNewDay = timeChange.getHours()+" h"+" "+timeChange.getMinutes();
-//                 console.log(timeNewDay);
-//                 timeNewDay.toString();
-//                 setTime(timeNewDay);
-//               }}
-//             />
-//             <TextInput style = {{height: 40, margin: 10, borderColor: 'grey', borderWidth: 0.5,width:'40%',backgroundColor:'white',opacity:0.8}}
-//                   underlineColorAndroid = "transparent"
-//                   value = {`${time}`}
-//                   placeholderTextColor = "black"
-//                   autoCapitalize = "none"
-//               />
-
-//               <Button
-//                   type = "primary"
-//                   style = {{height: 40, margin: 10, backgroundColor: 'red', borderColor: 'red'}} 
-//                   onPress={()=> {getGeocoding()}}> 
-//                   Valider
-//               </Button>
-//           </View>   
-//       </KeyboardAvoidingView>
-      
-        
-//     );
-//   }
 
 
 
@@ -270,6 +55,7 @@ class HomePage extends Component {
       } 
     )
   }
+
 
   getGeocoding = async () => {
 
@@ -397,95 +183,101 @@ class HomePage extends Component {
 
     return (
       // Keyboard params
-    <KeyboardAvoidingView behavior="padding" style={{flex: 1}} enabled> 
-      <ScrollView style={{flex: 1}} scrollEnabled={true} >
+      <KeyboardAvoidingView behavior="padding" style={{flex: 1}} enabled > 
+        <ScrollView style={{flex: 1}} scrollEnabled={true} >
 
-      <View style={{width: '100%', height: '100%',flex:1, alignItems: 'center', margin: 0}}>  
-        {/* Burger menu */}  
-        <ToggleHeader  
-          style={styles.toggle}     
-          navigation={this.props.navigation} title="HomePage"  /> 
-        
-        {/* image */}  
-          <Tile
-          imageSrc={imagetile}
-          captionStyle={{ opacity: 1 }}
-          title="Ou souhaitez-vous aller ?"
-          featured          
-          />
+        <View style={{width: '100%', height: '100%',flex:1, alignItems: 'center', margin: 0}}>  
+          {/* Burger menu */}  
+          <ToggleHeader  
+            style={styles.toggle}     
+            navigation={this.props.navigation} title="HomePage"  /> 
+          
+          {/* image */}  
+            
+            <Tile 
+              titleStyle={{ color: 'black', fontSize: 40}}
+              imageSrc={imagetile}
+              captionStyle={{ opacity: 1 }}
+              title="Ou souhaitez-vous aller ?"
+              featured          
+            />
 
-          {/* form HomePage */}
-          <TextInput style = {{height: 40, marginTop: 10, borderColor: 'grey', borderWidth: 0.5,width:'70%',backgroundColor:'white',opacity:0.8, paddingLeft: 8}}
-              //  underlineColorAndroid = "transparent"
-                placeholder = "Ou êtes vous ?  "
-                placeholderTextColor = "black"
-                //autoCapitalize = "none"
+              <TextInput style = {styles.input}
+                underlineColorAndroid = "transparent"
+                placeholder = "Ma position"
+                placeholderTextColor = "#393e46"
+                autoCapitalize = "none"
                 value= {this.state.departure}
                 onChangeText={(e) => this.onChangeDeparture(e)}
-            />
-              {predictionsRenderDeparture}
-            <TextInput style = {{height: 40, margin: 10, borderColor: 'grey', borderWidth: 0.5,width:'70%',backgroundColor:'white',opacity:0.8, paddingLeft: 8}}
-                //underlineColorAndroid = "transparent"
-                placeholder = "  Ou souhaitez-vous aller ?  "
-                placeholderTextColor = "black"
-               // autoCapitalize = "none"
-               value= {this.state.arrival}
-               onChangeText={(e) => this.onChangeDestination(e)}
-
-            />
-            {predictionsRenderArrival}
-            <DatePicker
-            style={{width: 200}}
-            date={this.state.date}  //initial date from state
-            //time={time}
-            mode="datetime" //The enum of date, datetime and time
-            placeholder="select date"
-            format="DD-MM-YYYY"
-            minDate="01-01-2019"
-            maxDate="01-01-2021"
-            confirmBtnText="Confirm"
-            cancelBtnText="Cancel"
-            customStyles={{
-              dateIcon: {
-                position: 'absolute',
-                left: 0,
-                top: 4,
-                marginLeft: 0
-              },
-              dateInput: {
-                marginLeft: 36
-              }
-            }}
-            onDateChange={(dateChange, timeChange) => { 
-              this.setState({date: dateChange, hourDeparture: timeChange})
-              console.log(timeChange);
-              var timeNewDay = timeChange.getHours()+" h"+" "+timeChange.getMinutes();
-              console.log(timeNewDay);
-              timeNewDay.toString();
-              this.setState({hourDeparture: timeNewDay})
-            }}
-          />
-          <TextInput style = {{height: 40, margin: 10, borderColor: 'grey', borderWidth: 0.5,width:'40%',backgroundColor:'white',opacity:0.8}}
+              />
+          
+                {predictionsRenderDeparture}
+              <TextInput style = {styles.input}
                 underlineColorAndroid = "transparent"
-                value = {`${this.state.hourDeparture}`}
-                placeholderTextColor = "black"
+                placeholder = "  Ou allez-vous ?  "
+                placeholderTextColor = "#393e46"
                 autoCapitalize = "none"
-            />
+                value= {this.state.arrival}
+                onChangeText={(e) => this.onChangeDestination(e)}
+              />
+              {predictionsRenderArrival}
+              <DatePicker
+                style = {styles.datepicker}
+                date={this.state.date}  //initial date from state
+                mode="datetime" //The enum of date, datetime and time
+                placeholder="select date"
+                format="DD-MM-YYYY"
+                minDate="01-01-2019"
+                maxDate="01-01-2021"
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                customStyles={{
+                  dateIcon: {
+                    position: 'absolute',
+                    left: 0,
+                    top: 4,
+                    marginLeft: 0
+                  },
+                  dateInput: {
+                    marginLeft: 36
+                  }
+                }}
+                onDateChange={(dateChange, timeChange) => { 
+                  this.setState({date: dateChange, hourDeparture: timeChange})
+                  console.log(timeChange);
+                  var timeNewDay = timeChange.getHours()+" h"+" "+timeChange.getMinutes();
+                  console.log(timeNewDay);
+                  timeNewDay.toString();
+                  this.setState({hourDeparture: timeNewDay})
+                }}
+              />
 
-            <Button
-                type = "primary"
-                style = {{height: 40, margin: 10, backgroundColor: 'red', borderColor: 'red'}} 
-                onPress={()=> {this.getGeocoding()}}> 
-                Valider
-            </Button>
-        </View>   
-        </ScrollView>
+                <TextInput style = {styles.input}
+                  underlineColorAndroid = "transparent"
+                  value = {`${this.state.hourDeparture}`}
+                  placeholderTextColor = "#393e46" 
+                  autoCapitalize = "none"
+                />
+          
 
-    </KeyboardAvoidingView>
-    
-      
-  );
-} 
+                <Button 
+                  style = {styles.submitButton}
+                  title = "Valider"
+                  onPress={()=> {this.getGeocoding()}}
+                />              
+              
+
+              {/* footer */}
+              <View style={{ flex: 1, backgroundColor: '#222831', alignItems: 'center', justifyContent: 'center',width: '100%', maxHeight: 60, marginTop: 10 }}>
+                <AntIcon name="car" color="#00adb5" size={35} />
+                <Text style = {{color: 'white', fontSize:10}}> Choisissez votre course </Text>
+            </View>
+
+          </View>   
+          </ScrollView>
+      </KeyboardAvoidingView>
+    );
+  } 
 }
 
 
@@ -494,15 +286,47 @@ class HomePage extends Component {
 const styles = StyleSheet.create({
     toggle: {
       flex: 1,
-      marginTop: 0
+      marginTop: 0,
+      
     },
-    predictionsStyle: {
+     datepicker: {
+      borderColor: '#222831',
+      borderWidth: 0.2,
+      width: '70%', 
+    },
+
+    input: {
+      width: '70%', 
+      margin: 8,
+      height: 40,
+      borderWidth: 0,
+      backgroundColor: '#BBBBBB',
+      fontWeight: '400',
+      padding: 10,
+      borderRadius: 3,
+      textAlign:'center',
+      marginTop: 10
+   },
+   submitButton: {
+      width: '70%',
+      backgroundColor: '#00adb5',
+      padding: 10,
+      marginBottom: 15,
+      height: 40,
+      borderRadius: 3,
+      marginTop: 30,
+      color: 'white',
+      textAlign:'center',
+      
+   },
+      predictionsStyle: {
       backgroundColor: 'white',
       padding: 8,
       fontSize: 16,
       borderWidth: 0.5,
       width: '70%'
     }
+   
  });
   
 
@@ -544,18 +368,18 @@ const styles = StyleSheet.create({
       dispatch({type: 'checkStatus', isConnected: isConnected})
     }
   }
-}
+} 
+ function mapStateToProps(state) {
+   console.log(state)
 
-function mapStateToProps(state) {
-  console.log(state)
-  return {
-
+   return {
+    isConnected: state.UserStatus
+    }
   }
-}
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-) (HomePage);
+  mapStateToProps,
+  mapDispatchToProps
+)(HomePage);
 
  
