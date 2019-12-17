@@ -1,31 +1,56 @@
 import React from "react";
-import {StyleSheet, View} from 'react-native';
+import {View, Text} from 'react-native';
 import { Icon } from 'react-native-elements'
 import A from 'react-native-a';
+import {connect} from 'react-redux';
 import ToggleHeader from "./ToggleHeader";
 
 
 const ProfilPage = props => {
-      return (
-<View style={{width: '100%', height: '100%',flex:1, alignItems: 'center', margin: 0}}>  
- <ToggleHeader navigation={props.navigation} title="Votre profil" />    
-      <View style={{flex:1, flexDirection:'column',justifyContent: 'center', alignItems: 'center'}}>
+      let displayHomeAddress;
+      let displayOfficeAddress;
 
-           <View style={{ marginBottom: 20, flexDirection:'row'}}>
-          <Icon name="star"></Icon><A href="#"> Ajouter un domicile </A>
-          </View>
-          <View style={{ marginBottom: 20, marginTop: 10}}>
-           <A href="#"> Ajouter un lieu de travail </A>
-          </View>
-          <View style={{ marginTop: 20, flexDirection:'row'}} >
-          <Icon name="settings"></Icon><A href="#"> Modifier vos paramètres </A>
-          </View>
-      </View> 
-</View> 
+      if(props.homeaddress) {
+            displayHomeAddress =  <Text onPress={() => props.navigation.navigate('InputPageProfilHome')}> {props.homeaddress}</Text>
+      } else {
+            displayHomeAddress =  <Text onPress={() => props.navigation.navigate('InputPageProfilHome')}> Ajouter un domicile </Text>
+      }
+
+      if(props.officeaddress) {
+            displayOfficeAddress =  <Text onPress={() => props.navigation.navigate('InputPageProfilWork')}> {props.officeaddress}</Text>
+      } else {
+            displayOfficeAddress =  <Text onPress={() => props.navigation.navigate('InputPageProfilWork')}> Ajouter un domicile </Text>
+      }
+
+      return (
+            <View style={{width: '100%', height: '100%',flex:1, alignItems: 'center', margin: 0}}>  
+                  <ToggleHeader navigation={props.navigation} title="Votre profil" />    
+                  <View style={{flex:1, flexDirection:'column',justifyContent: 'center', alignItems: 'center'}}>
+                        <View style={{ marginBottom: 20, flexDirection:'row'}}>
+                              <Icon name="star"></Icon>{displayHomeAddress}
+                        </View>
+                        
+                        <View style={{ marginBottom: 20, marginTop: 10}}>
+                              {displayOfficeAddress}
+                        </View>
+                        <View style={{ marginTop: 20, flexDirection:'row'}} >
+                              <Icon name="settings"></Icon><A href="#"> Modifier vos paramètres </A>
+                        </View>
+                  </View> 
+            </View> 
       )
     }; 
 
-   
- 
+    function mapStateToProps(state) {
+      return {
+            homeaddress: state.User.homeaddress,
+            officeaddress: state.User.officeaddress
+      }
+    }
+  
 
-    export default ProfilPage;
+  export default connect(
+      mapStateToProps,
+      null
+  ) (ProfilPage)
+

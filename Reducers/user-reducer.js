@@ -12,10 +12,27 @@ export default function User(userDatas = {}, action) {
         cpyUser.lastName = action.lastName;
         cpyUser.email = action.email;
         cpyUser.tel = action.tel;
+        cpyUser.homeaddress = action.homeaddress;
+        cpyUser.officeaddress = action.officeaddress
         cpyUser.password = action.password
 
         console.log('Reducer: My cpyUser ---->')
         console.log(cpyUser);
+        userDatas = cpyUser;
+        return cpyUser
+    } else if(action.type === 'saveHomeAddress') {
+        var cpyUser = {...userDatas};
+        cpyUser.homeaddress = action.homeaddress
+
+        console.log('USER AFTER HOME ADDRESS ----->',cpyUser)
+        userDatas = cpyUser;
+        return cpyUser
+    } else if(action.type === 'saveOfficeAddress') {
+        var cpyUser = {...userDatas};
+        cpyUser.officeaddress = action.officeaddress
+
+        console.log('USER AFTER HOME ADDRESS ----->',cpyUser)
+        userDatas = cpyUser;
         return cpyUser
     } else {
         return userDatas

@@ -8,6 +8,7 @@ import ToggleHeader from "./ToggleHeader";
 import { Card, WingBlank, List, Button } from '@ant-design/react-native';
 import decodePolyline from 'decode-google-map-polyline'
 import {ApiAddressGoogle} from '../config';
+import { createIconSetFromFontello } from 'react-native-vector-icons';
 const Item = List.Item
 
 function MapResult(props) {
@@ -42,16 +43,14 @@ function MapResult(props) {
                     return {latitude: element.lat, longitude: element.lng}
                 })
 
-                // Recupere que la valeur de la distance (13 Km => 13)
                 var distanceItineraire = data.routes[0].legs[0].distance.text;
-                distanceItineraire.split(' ');
 
                 // Recupere le temps pour aller du point A au point B
                 var tempsItineraire = data.routes[0].legs[0].duration.text;
 
                 //Met a jour les states
                 setPolylineCoordinate(cpy);
-                setDistance(distanceItineraire[0]);
+                setDistance(distanceItineraire);
                 setTimeTravel(tempsItineraire);
                 
             })
@@ -96,7 +95,7 @@ function MapResult(props) {
                                         <Item extra={ <Ionicons name='md-radio-button-on' size={20} color='#32a6ff'/>}> {props.departure} </Item>
                                         <Item extra={ <Ionicons name='md-radio-button-on' size={20} color='#ea1919'/>}> {props.arrival} </Item>
                                         <View style={{flex: 1, flexDirection: 'row', justifyContent: "space-between"}}>
-                                            <Text style={styles.textForm}> {distance} Km</Text>
+                                            <Text style={styles.textForm}> {distance} </Text>
                                             <Text style={styles.textFormPrice}> {price} €</Text>          
                                         </View>
                                         

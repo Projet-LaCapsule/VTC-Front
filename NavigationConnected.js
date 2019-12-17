@@ -13,6 +13,8 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator} from 'react-navigation-drawer';
 import {connect} from 'react-redux';
 import { HeaderBackButton } from 'react-navigation-stack';
+import InputPageProfilHome from './Components/InputPageProfilDom';
+import InputPageProfilWork from './Components/InputPageProfilWork';
 
  
 const MainDrawer = createDrawerNavigator(
@@ -66,49 +68,60 @@ const MainDrawer = createDrawerNavigator(
 })
 
 const StackConnectedNavigator = createStackNavigator(
+    
   {
-      MainDrawer: {
-      screen : MainDrawer,
-      navigationOptions: () => ({
-          header: null
-      })
-  },  
-      UserTrip: {
-      screen: UserTrip,
-      navigationOptions: () => ({
-          header: null,
-          title: 'Vos courses'
-      })
-      },
-
-      ProfilPage: {
-      screen: ProfilPage,
-      navigationOptions: () => ({
-          header: null,
-          title: 'Profil'
-      })
-      },
-
-      
-
-    SignUp: {
-    screen: SignUp,
+    
+    MainDrawer: {
+        screen : MainDrawer,
+        navigationOptions: () => ({
+            header: null
+        })
+    },  
+    UserTrip: {
+    screen: UserTrip,
     navigationOptions: () => ({
         header: null,
-        title:'Créer un compte'
-    })  
+        title: 'Vos courses'
+    })
+    },
+
+    ProfilPage: {
+        screen: ProfilPage,
+        navigationOptions: () => ({
+            header: null,
+            title: 'Profil'
+        })
+    },
+
+    SignUp: {
+        screen: SignUp,
+        navigationOptions: () => ({
+            header: null,
+            title:'Créer un compte'
+        })  
     }, 
-      SettingPage: {
-      screen: SettingPage,
-       navigationOptions: () => ({
-        header: null,
-        title:'Paramètres'
-    })  
-      }, 
+    SettingPage: {
+        screen: SettingPage,
+        navigationOptions: () => ({
+            header: null,
+            title:'Paramètres'
+        })  
+    }, 
 
-      })
-
-
+    InputPageProfilHome: {
+        screen: InputPageProfilHome,
+        navigationOptions: () => ({
+            title:'Ajouter une adresse'
+        })  
+    },
+    InputPageProfilWork: {
+        screen: InputPageProfilWork,
+        navigationOptions: () => ({
+            title:'Ajouter une adresse'
+        })  
+    },
+    
+})
 
 export default Navigation = createAppContainer(StackConnectedNavigator)
 

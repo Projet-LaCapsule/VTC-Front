@@ -20,7 +20,6 @@ var timeDay = ladate.getHours()+" h"+" "+ladate.getMinutes();
 
 
 class HomePage extends Component {   
-
   constructor() {
     super()
 
@@ -42,20 +41,19 @@ class HomePage extends Component {
       function(err, data) { 
         if(data) {
           var userData = JSON.parse(data); 
-          console.log('userData --->')
-          console.log(userData);
+          console.log('userData --->', userData)
 
-          ctx.props.signUp(userData._id, userData.first_name, userData.last_name, userData.email, userData.tel, userData.password); //enregistre les données pour redux
+          ctx.props.sign(userData._id, userData.first_name, userData.last_name, userData.email, userData.tel, userData.password, userData.homeaddress, userData.officeaddress); //enregistre les données pour redux
           ctx.props.checkStatus(true); 
-
+        
         } else {
           console.log('No user connected');
-          this.props.checkStatus(false); 
+          ctx.props.checkStatus(false); 
         }
       } 
     )
+    //AsyncStorage.removeItem('userVTC');
   }
-
 
   getGeocoding = async () => {
 
@@ -351,7 +349,7 @@ const styles = StyleSheet.create({
           }
         )
     },
-    signUp: function(id, firstName, lastName, email, tel, password) {
+    sign: function(id, firstName, lastName, email, tel, password, homeaddress, officeaddress) {
       dispatch(
           {
               type: 'sign',
@@ -360,7 +358,9 @@ const styles = StyleSheet.create({
               lastName: lastName,
               email: email,
               tel: tel,
-              password: password
+              password: password,
+              homeaddress: homeaddress,
+              officeaddress: officeaddress
           }
       )
     },

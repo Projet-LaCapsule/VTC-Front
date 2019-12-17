@@ -74,7 +74,7 @@ function MapResult(props) {
                                     <InputItem style={styles.textForm} value={props.departure} editable={false}> Départ : </InputItem>
                                     <InputItem style={styles.textForm} value={props.arrival} editable={false}> Arrivé : </InputItem>
                                     <InputItem style={styles.textForm} value={`${props.price} €`} editable={false}> Prix : </InputItem>
-                                    <InputItem style={styles.textForm} value={`${props.distance} Km`} editable={false}> Km : </InputItem>
+                                    <InputItem style={styles.textForm} value={`${props.distance} `} editable={false}> Km : </InputItem>
                                     <InputItem style={styles.textForm} value={`${props.time}`} editable={false}> Temps : </InputItem>
                                     <InputItem style={styles.textForm} value={props.date} extra={props.hourDeparture} editable={false}> Date : </InputItem>
                                 </Card.Body>
