@@ -1,7 +1,6 @@
 import React from "react";
 import {View, Text} from 'react-native';
 import { Icon } from 'react-native-elements'
-import A from 'react-native-a';
 import {connect} from 'react-redux';
 import ToggleHeader from "./ToggleHeader";
 
@@ -13,13 +12,13 @@ const ProfilPage = props => {
       if(props.homeaddress) {
             displayHomeAddress =  <Text onPress={() => props.navigation.navigate('InputPageProfilHome')}> {props.homeaddress}</Text>
       } else {
-            displayHomeAddress =  <Text onPress={() => props.navigation.navigate('InputPageProfilHome')}> Ajouter un domicile </Text>
+            displayHomeAddress =  <Text style={{color: '#006eff'}} onPress={() => props.navigation.navigate('InputPageProfilHome')}> Ajouter un domicile </Text>
       }
 
       if(props.officeaddress) {
             displayOfficeAddress =  <Text onPress={() => props.navigation.navigate('InputPageProfilWork')}> {props.officeaddress}</Text>
       } else {
-            displayOfficeAddress =  <Text onPress={() => props.navigation.navigate('InputPageProfilWork')}> Ajouter un domicile </Text>
+            displayOfficeAddress =  <Text style={{color: '#006eff'}} onPress={() => props.navigation.navigate('InputPageProfilWork')}> Ajouter un domicile </Text>
       }
 
       return (
@@ -34,7 +33,7 @@ const ProfilPage = props => {
                               {displayOfficeAddress}
                         </View>
                         <View style={{ marginTop: 20, flexDirection:'row'}} >
-                              <Icon name="settings"></Icon><A href="#"> Modifier vos paramètres </A>
+                              <Icon name="settings"></Icon><Text style={{color: '#006eff'}} onPress={() => props.navigation.navigate('SettingPage')}> Modifier vos paramètres </Text>
                         </View>
                   </View> 
             </View> 

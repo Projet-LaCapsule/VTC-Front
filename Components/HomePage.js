@@ -28,8 +28,8 @@ class HomePage extends Component {
       arrival: '',
       date: datedujour,
       hourDeparture: timeDay,
-      positionDeparture: {lat: null, long: null},
-      positionArrival: {lat: null, long: null},
+      positionDeparture: {lat: 0, long: 0},
+      positionArrival: {lat: 0, long: 0},
       predictionsDeparture: [],
       predictionsArrival: []
     }
@@ -52,7 +52,6 @@ class HomePage extends Component {
         }
       } 
     )
-    //AsyncStorage.removeItem('userVTC');
   }
 
   getGeocoding = async () => {
@@ -132,9 +131,19 @@ class HomePage extends Component {
 
     //Envoie dans redux les adresses, positions, date, heure de la course
     await this.props.searchTravel(this.state.departure, this.state.arrival, this.state.date, this.state.hourDeparture, this.state.positionDeparture.lat, this.state.positionDeparture.long, this.state.positionArrival.lat, this.state.positionArrival.long);
+    this.setState({
+      departure: '',
+      arrival: '',
+      data: datedujour,
+      hourDeparture: timeDay,
+      positionDeparture: {lat: 0, long: 0},
+      positionArrival: {lat: 0, long: 0},
+      predictionsDeparture: [],
+      predictionsArrival: []
+    })
 
     this.props.navigation.navigate('MapResult');
-   }
+  }
 
    onChangeDeparture = async (destination) => {
      // Change la valeur de l'input des que l'on ecrit

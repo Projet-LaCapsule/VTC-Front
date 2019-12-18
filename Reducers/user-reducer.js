@@ -34,6 +34,12 @@ export default function User(userDatas = {}, action) {
         console.log('USER AFTER HOME ADDRESS ----->',cpyUser)
         userDatas = cpyUser;
         return cpyUser
+    } else if(action.type === 'logout' ) {
+        var resetUser = {};
+
+        userDatas = resetUser;
+
+        return resetUser;
     } else {
         return userDatas
     }

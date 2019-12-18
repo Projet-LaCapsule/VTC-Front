@@ -27,42 +27,56 @@ function MapResult(props) {
 
     useEffect(() => {
         function drawItineraire() {
-            fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${props.positionDeparture.lat},${props.positionDeparture.long}&destination=${props.positionArrival.lat},${props.positionArrival.long}&key=${ApiAddressGoogle}`)
-            .then(response => {
-                return response.json();
-            })
-            .then(data => {
-                //console.log(data);
-                console.log('Data Result --------->',data.routes[0].overview_polyline.points)
-
-                // decode tout les points retourné par l'api
-                var array = decodePolyline(data.routes[0].overview_polyline.points);
-                
-                // Modifie les objets dans le tableau array pour avoir les clefs latitude et longitude au lieu de lat et lng (pour MapView.Polyline)
-                var cpy = array.map(element => {
-                    return {latitude: element.lat, longitude: element.lng}
+            if(props.err) {
+                return null;
+            } else {
+                fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${props.positionDeparture.lat},${props.positionDeparture.long}&destination=${props.positionArrival.lat},${props.positionArrival.long}&key=${ApiAddressGoogle}`)
+                .then(response => {
+                    return response.json();
                 })
+                .then(data => {
+                    //console.log(data);
+                   // console.log('Data Result --------->',data.routes[0].overview_polyline.points)
+    
+                    // decode tout les points retourné par l'api
+                    var array = decodePolyline(data.routes[0].overview_polyline.points);
+                    
+                    // Modifie les objets dans le tableau array pour avoir les clefs latitude et longitude au lieu de lat et lng (pour MapView.Polyline)
+                    var cpy = array.map(element => {
+                        return {latitude: element.lat, longitude: element.lng}
+                    })
+    
+                    var distanceItineraire = data.routes[0].legs[0].distance.text;
+    
+                    // Recupere le temps pour aller du point A au point B
+                    var tempsItineraire = data.routes[0].legs[0].duration.text;
+    
+                    //Met a jour les states
+                    setPolylineCoordinate(cpy);
+                    setDistance(distanceItineraire);
+                    setTimeTravel(tempsItineraire);
 
-                var distanceItineraire = data.routes[0].legs[0].distance.text;
-
-                // Recupere le temps pour aller du point A au point B
-                var tempsItineraire = data.routes[0].legs[0].duration.text;
-
-                //Met a jour les states
-                setPolylineCoordinate(cpy);
-                setDistance(distanceItineraire);
-                setTimeTravel(tempsItineraire);
-                
-            })
-            .catch(err => {
-                console.log(err);
-            })
+                    
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+            }
+            
         }
 
         drawItineraire();
     }, [])
 
-    return (
+    if(!props.departure || !props.arrival) {
+        return(
+            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#222831'}}>
+                <Text style={{fontSize: 17, marginBottom: 15, color: 'white'}}> Vous n'avez pas choisi d'itinéraire ¯\_( ͠° ͟ʖ °͠ )_/¯ </Text>
+                <Button style={{backgroundColor: '#00adb5', borderColor: '#00adb5'}} type='primary' onPress={() => props.navigation.navigate('HomePage')}> Home </Button>
+            </View> 
+        );
+    }else {
+        return (
             <View style={styles.container}>
 
               <ToggleHeader navigation={props.navigation} title="MapResult" />     
@@ -110,7 +124,8 @@ function MapResult(props) {
                     </View>   
                 </ScrollView>
             </View>
-    );
+        );
+    }
 }
 
 const styles = StyleSheet.create({
@@ -143,22 +158,30 @@ const styles = StyleSheet.create({
   }
 
   function mapStateToProps(state) {
-      return {
-        departure: state.Travel.departure,
-        arrival: state.Travel.arrival,
-        date: state.Travel.data,
-        hourDeparture: state.Travel.hourDeparture,
-        positionDeparture: {
-            lat: state.Travel.positionDeparture.lat,
-            long: state.Travel.positionDeparture.long
-        },
-        positionArrival: {
-            lat: state.Travel.positionArrival.lat,
-            long: state.Travel.positionArrival.long
-        },
-
-        userIsConnected: state.UserStatus
+      console.log(state)
+      if(Object.entries(state.Travel).length === 0) {
+          return {
+            err: true
+          };
+      } else {
+        return {
+            departure: state.Travel.departure,
+            arrival: state.Travel.arrival,
+            date: state.Travel.data,
+            hourDeparture: state.Travel.hourDeparture,
+            positionDeparture: {
+                lat: state.Travel.positionDeparture.lat,
+                long: state.Travel.positionDeparture.long
+            },
+            positionArrival: {
+                lat: state.Travel.positionArrival.lat,
+                long: state.Travel.positionArrival.long
+            },
+            userIsConnected: state.UserStatus,
+            err: false
+          }
       }
+      
   }
   
   export default connect(

@@ -43,56 +43,63 @@ function MapResult(props) {
                 return response.json();
             })
             .then( datas => {
-                console.log('data addTravel --->', datas)
+                console.log('data addTravel --->', datas);
+                props.tripConfirmed();
             })
             .catch(err => {
                 console.log(err)
             })
-
-            
         })
         .catch(err => {
             console.log(err)
-        })
-
-
+        })  
 
         setIsVisible(!isVisible);
-        props.navigation.navigate('Home');
+        props.navigation.navigate('HomePage');
     }
 
-    return (
-        <Fragment>
-            <ToggleHeader navigation={props.navigation}  title="Votre course"  />   
-            <ScrollView style={{flex: 1}} scrollEnabled={true} >
-                <View style={styles.container}>
-                    <View style={{marginTop: 1}}>
-                        <WingBlank size='sm'>  
-                            <Card>
-                                <Text style={styles.titleCard}> Récapitulatif de la course</Text>
-                                <Card.Body>
-                                    <InputItem style={styles.textForm} value={props.departure} editable={false}> Départ : </InputItem>
-                                    <InputItem style={styles.textForm} value={props.arrival} editable={false}> Arrivé : </InputItem>
-                                    <InputItem style={styles.textForm} value={`${props.price} €`} editable={false}> Prix : </InputItem>
-                                    <InputItem style={styles.textForm} value={`${props.distance} `} editable={false}> Km : </InputItem>
-                                    <InputItem style={styles.textForm} value={`${props.time}`} editable={false}> Temps : </InputItem>
-                                    <InputItem style={styles.textForm} value={props.date} extra={props.hourDeparture} editable={false}> Date : </InputItem>
-                                </Card.Body>
-                                <Card.Footer 
-                                    content={<Button style={{width: 70, height: 40}}> <Ionicons name='md-arrow-back' size={17} color='black'/> </Button>}
-                                    extra={<Button style={{width: 120, height: 40, marginLeft: 40, backgroundColor: '#7d35f2', borderColor: '#7d35f2'}} type='primary' onPress={() => handleClickModal()} > Confirmer </Button>}
-                                />
-                            </Card>
-                        </WingBlank>     
-                    </View>   
-                </View>
-            </ScrollView> 
-            <Modal isOpen={isVisible} position={"bottom"} style={[styles.modal, styles.modal4]}>
-                <Text style={{marginLeft: 20, marginBottom: 25, color: 'green', fontSize: 20}}> Votre course a été validée <Ionicons name='md-checkmark-circle' size={25} color='green'/> </Text>
-                <Button style={{width: '70%', height: 40, marginLeft: 20}} type='primary' onPress={() => handleClickValidation()} > Ok !</Button>
-            </Modal>
-        </Fragment>  
-    );
+    if(!props.departure || !props.arrival) {
+        return (
+            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#222831'}}>
+                <Text style={{fontSize: 17, marginBottom: 15, color: 'white'}}> Vous n'avez pas choisi d'itinéraire ¯\_( ͠° ͟ʖ °͠ )_/¯ </Text>
+                <Button style={{backgroundColor: '#00adb5', borderColor: '#00adb5'}} type='primary' onPress={() => props.navigation.navigate('HomePage')}> Home </Button>
+            </View> 
+        );
+        
+    } else {
+        return (
+            <Fragment>
+                <ToggleHeader navigation={props.navigation}  title="Votre course"  />   
+                <ScrollView style={{flex: 1}} scrollEnabled={true} >
+                    <View style={styles.container}>
+                        <View style={{marginTop: 1}}>
+                            <WingBlank size='sm'>  
+                                <Card>
+                                    <Text style={styles.titleCard}> Récapitulatif de la course</Text>
+                                    <Card.Body>
+                                        <InputItem style={styles.textForm} value={props.departure} editable={false}> Départ : </InputItem>
+                                        <InputItem style={styles.textForm} value={props.arrival} editable={false}> Arrivé : </InputItem>
+                                        <InputItem style={styles.textForm} value={`${props.price} €`} editable={false}> Prix : </InputItem>
+                                        <InputItem style={styles.textForm} value={`${props.distance} `} editable={false}> Km : </InputItem>
+                                        <InputItem style={styles.textForm} value={`${props.time}`} editable={false}> Temps : </InputItem>
+                                        <InputItem style={styles.textForm} value={props.date} extra={props.hourDeparture} editable={false}> Date : </InputItem>
+                                    </Card.Body>
+                                    <Card.Footer 
+                                        content={<Button style={{width: 70, height: 40}}> <Ionicons name='md-arrow-back' size={17} color='black'/> </Button>}
+                                        extra={<Button style={{width: 120, height: 40, marginLeft: 40, backgroundColor: '#7d35f2', borderColor: '#7d35f2'}} type='primary' onPress={() => handleClickModal()} > Confirmer </Button>}
+                                    />
+                                </Card>
+                            </WingBlank>     
+                        </View>   
+                    </View>
+                </ScrollView> 
+                <Modal isOpen={isVisible} position={"bottom"} style={[styles.modal, styles.modal4]}>
+                    <Text style={{marginLeft: 20, marginBottom: 25, color: 'green', fontSize: 20}}> Votre course a été validée <Ionicons name='md-checkmark-circle' size={25} color='green'/> </Text>
+                    <Button style={{width: '70%', height: 40, marginLeft: 20}} type='primary' onPress={() => handleClickValidation()} > Ok !</Button>
+                </Modal>
+            </Fragment>  
+        );
+    }
 }
 
 const styles = StyleSheet.create({
@@ -123,6 +130,14 @@ const styles = StyleSheet.create({
       },
   });
 
+  function mapDispatchToProps(dispatch) {
+    return {
+        tripConfirmed: function() {
+            dispatch({type: 'travelConfirmed'})
+        }
+    }
+  }
+
   function mapStateToProps(state) {
       console.log('State TripOverview ----->');
       console.log(state);
@@ -140,5 +155,5 @@ const styles = StyleSheet.create({
   
   export default connect(
     mapStateToProps,
-    null
+    mapDispatchToProps
   ) (MapResult);
