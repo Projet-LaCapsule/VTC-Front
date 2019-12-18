@@ -12,7 +12,7 @@ import { createIconSetFromFontello } from 'react-native-vector-icons';
 const Item = List.Item
 
 function MapResult(props) {
-    const [price, setPrice] = useState(102);
+    const [price, setPrice] = useState(null);
     const [distance, setDistance] = useState(null);
     const [timeTravel, setTimeTravel] = useState(null);
     const [polylineCoordinate, setPolylineCoordinate] = useState([]);
@@ -50,11 +50,15 @@ function MapResult(props) {
     
                     // Recupere le temps pour aller du point A au point B
                     var tempsItineraire = data.routes[0].legs[0].duration.text;
+
+                    var splitDistance = data.routes[0].legs[0].distance.text.split(' ');
+                    var priceTrip = splitDistance[0] * 1.85;
     
                     //Met a jour les states
                     setPolylineCoordinate(cpy);
                     setDistance(distanceItineraire);
                     setTimeTravel(tempsItineraire);
+                    setPrice(priceTrip.toFixed(2));
 
                     
                 })

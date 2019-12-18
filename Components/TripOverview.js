@@ -1,9 +1,11 @@
 import React, {useState, Fragment} from 'react';
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, Alert} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 import {connect} from 'react-redux';
 import Modal from "react-native-modalbox";
 import ToggleHeader from "./ToggleHeader"
+import SendSMS from 'react-native-sms'
+
 
 import { Card, WingBlank, Button, InputItem } from '@ant-design/react-native';
 
@@ -43,8 +45,26 @@ function MapResult(props) {
                 return response.json();
             })
             .then( datas => {
+                function sendMessage() {
+                    SendSMS.send({
+                        body: 'My message',
+                        recipients: ['0616095195'],
+                        successTypes: ['sent', 'queued'],
+                        allowAndroidSendWithoutReadPermission: true
+                    }, (completed, cancelled, error) => {
+                        if(completed){
+                            Alert.alert('SMS Sent Successfully.')
+                          }else if(cancelled){
+                            console.log('SMS Sent Cancelled.');
+                          }else if(error){
+                            console.log('Some error occured.');
+                          }                 
+                    })
+                }
+                sendMessage();
                 console.log('data addTravel --->', datas);
                 props.tripConfirmed();
+
             })
             .catch(err => {
                 console.log(err)
@@ -60,10 +80,7 @@ function MapResult(props) {
 
     if(!props.departure || !props.arrival) {
         return (
-            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#222831'}}>
-                <Text style={{fontSize: 17, marginBottom: 15, color: 'white'}}> Vous n'avez pas choisi d'itinéraire ¯\_( ͠° ͟ʖ °͠ )_/¯ </Text>
-                <Button style={{backgroundColor: '#00adb5', borderColor: '#00adb5'}} type='primary' onPress={() => props.navigation.navigate('HomePage')}> Home </Button>
-            </View> 
+          props.navigation.navigate('HomePage')
         );
         
     } else {

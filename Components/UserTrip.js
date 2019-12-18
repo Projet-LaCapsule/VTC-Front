@@ -10,17 +10,20 @@ const UserTrip = props => {
   const [userTrip, setUserTrip] = useState([]);
 
   useEffect(() => {
-    fetch(`http://${IpAdress}:3000/userTrip?id=${props.id}`)
-    .then(response => {
-      return response.json();
-    })
-    .then(data => {
-      console.log(data);
-      setUserTrip(data.userTrip.trips);
-    })
-    .catch(err => (
-      console.log(err)
-    ))
+    function fetchRoute() {
+      fetch(`http://${IpAdress}:3000/userTrip?id=${props.id}`)
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        console.log(data);
+        setUserTrip(data.userTrip.trips);
+      })
+      .catch(err => (
+        console.log(err)
+      ))
+    }
+    fetchRoute();
   }, [])
 
   return (
