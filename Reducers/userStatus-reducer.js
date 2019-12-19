@@ -5,6 +5,10 @@ export default function UserIsConnected(isConnected = false, action) {
         isConnected = action.isConnected;
         console.log(isConnected)
         return isConnected
+    } else if(action.type === 'logoutStatus') {
+        isConnected = false;
+
+        return isConnected;
     } else {
         return isConnected
     }
