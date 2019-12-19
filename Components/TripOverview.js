@@ -78,7 +78,7 @@ function MapResult(props) {
                                 </Card.Body>
                                 <Card.Footer 
                                     content={<Button style={{width: 70, height: 40}}> <Ionicons name='md-arrow-back' size={17} color='black'/> </Button>}
-                                    extra={<Button style={{width: 120, height: 40, marginLeft: 40, backgroundColor: '#00adb5', borderColor: '#00adb5'}} type='primary' onPress={() => handleClickModal()} > Confirmer </Button>}
+                                    extra={<Button style={{width: 120, height: 40, marginLeft: 40, backgroundColor: '#00adb5', borderColor: '#00adb5'}} type='primary' onPress={() => handleClickModal()} > Confirm </Button>}
                                 />
                             </Card>
                         </WingBlank>     

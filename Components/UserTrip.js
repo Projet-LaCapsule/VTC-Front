@@ -48,7 +48,7 @@ const UserTrip = props => {
             {
               userTrip.map((element, i) => (
                 <ListItem
-                  containerStyle={{height: 120}}
+                  containerStyle={{height: 130}}
                   key={i}
                   title={
                     <View style={{flex: 1, flexDirection: 'row', marginTop: 5, marginBottom: 4}}>
