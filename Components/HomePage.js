@@ -415,15 +415,10 @@ const styles = StyleSheet.create({
    },
    submitButton: {
       width: '70%',
-<<<<<<< HEAD
-      //padding: 10,
-      borderRadius: 3,      
-=======
       marginTop: 20,
       borderRadius: 3,
       
       
->>>>>>> 2067d28fe4c0978ee23248fe2e7def56a0fcf98e
    },
       predictionsStyle: {
       backgroundColor: '#eeeeee',
