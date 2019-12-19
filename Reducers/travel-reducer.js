@@ -31,6 +31,12 @@ export default function Travel(travel = {}, action) {
 
        // console.log('ChooseTravel ---->', cpyTravel);
         return cpyTravel
+    } else if(action.type === 'travelConfirmed') {
+        var resetTravel = {};
+
+        travel = resetTravel;
+
+        return resetTravel;
     } else {
         return travel;
     }

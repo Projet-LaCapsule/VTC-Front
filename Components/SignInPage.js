@@ -23,7 +23,7 @@ function SignIn(props) {
                 console.log(data)
                 AsyncStorage.setItem('userVTC', JSON.stringify(data.user)); //Enregistre user dans local storage
 
-                props.signUp(data.user._id, data.user.first_name, data.user.last_name, data.user.email, data.user.tel, data.user.password); //enregistre les données pour redux
+                props.signUp(data.user._id, data.user.first_name, data.user.last_name, data.user.email, data.user.tel, data.user.password, data.user.homeaddress, data.user.officeaddress); //enregistre les données pour redux
                 props.checkStatus(true); // Status Connecter
                 props.navigation.navigate('SettingPage');
             }
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
 
   function mapDispatchToProps(dispatch) {
     return {
-      signUp: function(id, firstName, lastName, email, tel, password) {
+      signUp: function(id, firstName, lastName, email, tel, password, homeaddress, officeaddress) {
 
         dispatch(
             {
@@ -92,7 +92,9 @@ const styles = StyleSheet.create({
                 lastName: lastName,
                 email: email,
                 tel: tel,
-                password: password
+                password: password,
+                homeaddress: homeaddress,
+                officeaddress: officeaddress
             }
         )
       },

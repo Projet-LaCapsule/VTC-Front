@@ -18,7 +18,7 @@ var datedujour = ladate.getDate()+"/"+(ladate.getMonth()+1)+"/"+ladate.getFullYe
 var timeDay = ladate.getHours()+" h"+" "+ladate.getMinutes();
 
 class HomePage extends Component {   
-   _isMounted = false;
+
 
   constructor() {
     super()
@@ -28,8 +28,8 @@ class HomePage extends Component {
       arrival: '',
       date: datedujour,
       hourDeparture: timeDay,
-      positionDeparture: {lat: null, long: null},
-      positionArrival: {lat: null, long: null},
+      positionDeparture: {lat: 0, long: 0},
+      positionArrival: {lat: 0, long: 0},
       predictionsDeparture: [],
       predictionsArrival: [],
       location: null,
@@ -78,18 +78,24 @@ class HomePage extends Component {
       function(err, data) { 
         if(data) {
           var userData = JSON.parse(data); 
-          //console.log('userData --->')
-          //console.log(userData);
-          ctx.props.signUp(userData._id, userData.first_name, userData.last_name, userData.email, userData.tel, userData.password); //enregistre les données pour redux
-          ctx.props.checkStatus(true); //Ajouter la durée estimée et le nbre de kms sur mapResult + algo prix en fonction kms
+
+          console.log('userData --->', userData)
+
+          ctx.props.sign(userData._id, userData.first_name, userData.last_name, userData.email, userData.tel, userData.password, userData.homeaddress, userData.officeaddress); //enregistre les données pour redux
+          ctx.props.checkStatus(true); 
+        
+
         } else {
           console.log('No user connected');
           ctx.props.checkStatus(false); 
         }
       } 
-    )    
-   
-    getGeocoding = async () => {
+
+    )
+  }
+
+  getGeocoding = async () => {
+
 
     // Transformer Valeur input => 21 rue Test => 21+rue+Test
     var transformAddressDeparture = this.state.departure.split(' ').join('+');
@@ -164,9 +170,19 @@ class HomePage extends Component {
 
     //Envoie dans redux les adresses, positions, date, heure de la course
     await this.props.searchTravel(this.state.departure, this.state.arrival, this.state.date, this.state.hourDeparture, this.state.positionDeparture.lat, this.state.positionDeparture.long, this.state.positionArrival.lat, this.state.positionArrival.long);
+    this.setState({
+      departure: '',
+      arrival: '',
+      data: datedujour,
+      hourDeparture: timeDay,
+      positionDeparture: {lat: 0, long: 0},
+      positionArrival: {lat: 0, long: 0},
+      predictionsDeparture: [],
+      predictionsArrival: []
+    })
 
     this.props.navigation.navigate('MapResult');
-   }
+  }
 
    onChangeDeparture = async (destination) => {
      // Change la valeur de l'input des que l'on ecrit
@@ -418,7 +434,7 @@ const styles = StyleSheet.create({
           }
         )
     },
-    signUp: function(id, firstName, lastName, email, tel, password) {
+    sign: function(id, firstName, lastName, email, tel, password, homeaddress, officeaddress) {
       dispatch(
           {
               type: 'sign',
@@ -427,7 +443,9 @@ const styles = StyleSheet.create({
               lastName: lastName,
               email: email,
               tel: tel,
-              password: password
+              password: password,
+              homeaddress: homeaddress,
+              officeaddress: officeaddress
           }
       )
     },

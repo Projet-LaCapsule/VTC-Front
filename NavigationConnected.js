@@ -11,104 +11,130 @@ import TripOverview from './Components/TripOverview';
 import SettingPage from './Components/SettingsPage';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator} from 'react-navigation-drawer';
-import {connect} from 'react-redux';
 import { HeaderBackButton } from 'react-navigation-stack';
+import InputPageProfilHome from './Components/InputPageProfilDom';
+import InputPageProfilWork from './Components/InputPageProfilWork';
+import Logout from './Components/Logout';
 
  
 const MainDrawer = createDrawerNavigator(
   {
+    
   HomePage: {
   screen: HomePage,
   navigationOptions: () => ({
           header: null,
           title:'Accueil'
       })
-  }, 
-
-  MapResult : {
-      screen: MapResult,
-      navigationOptions: () => ({
-          header: null,
-          title:'Votre recherche'
-      })
-      },
- 
-  TripOverview: {
-      screen: TripOverview,
-      navigationOptions: () => ({
-          header: null,
-          title:'Récapitulatif'
-      })
-      }, 
-
-  SignIn: {
-      screen: SignIn,
-      navigationOptions: () => ({
-          header: null,
-          title:'Se connecter'
-      })
-    },
-  
-  HelpPage: {
-  screen: HelpPage, 
-   navigationOptions: () => ({
-        header: null,
-        title:'Help' 
-    })  
-  }, 
+  },
   ProfilPage: {
-  screen: ProfilPage,
-  navigationOptions: () => ({
-          headerLeft: <HeaderBackButton onPress={() => navigation.goBack(null)} />,
-          title:'Page profil'
-      })
-  }, 
+    screen: ProfilPage,
+    navigationOptions: () => ({
+            headerLeft: <HeaderBackButton onPress={() => navigation.goBack(null)} />,
+            title:'Page profil'
+    })
+},
+  UserTrip: {
+    screen: UserTrip,
+    navigationOptions: () => ({
+        header: null,
+        title: 'Vos courses'
+    })
+    },
+
+    ProfilPage: {
+        screen: ProfilPage,
+        navigationOptions: () => ({
+                headerLeft: <HeaderBackButton onPress={() => navigation.goBack(null)} />,
+                title:'Page profil'
+        })
+    },
+
+    HelpPage: {
+    screen: HelpPage, 
+    navigationOptions: () => ({
+            header: null,
+            title:'Help' 
+        })  
+    }, 
+    Logout: {
+        screen: Logout, 
+        navigationOptions: () => ({
+                header: null,
+                title:'Deconnexion' 
+        })  
+    },
+   
 })
 
 const StackConnectedNavigator = createStackNavigator(
-  {
-      MainDrawer: {
-      screen : MainDrawer,
-      navigationOptions: () => ({
-          header: null
-      })
-  },  
-      UserTrip: {
-      screen: UserTrip,
-      navigationOptions: () => ({
-          header: null,
-          title: 'Vos courses'
-      })
-      },
+  { 
+    MainDrawer: {
+        screen : MainDrawer,
+        navigationOptions: () => ({
+            header: null
+        })
+    },  
+    MapResult : {
+        screen: MapResult,
+        navigationOptions: () => ({
+            header: null,
+            title:'Votre recherche'
+        })
+    },
 
-      ProfilPage: {
-      screen: ProfilPage,
-      navigationOptions: () => ({
-          header: null,
-          title: 'Profil'
-      })
-      },
-
-      
-
-    SignUp: {
-    screen: SignUp,
-    navigationOptions: () => ({
-        header: null,
-        title:'Créer un compte'
-    })  
-    }, 
-      SettingPage: {
-      screen: SettingPage,
-       navigationOptions: () => ({
-        header: null,
-        title:'Paramètres'
-    })  
+    TripOverview: {
+        screen: TripOverview,
+        navigationOptions: () => ({
+            header: null,
+            title:'Récapitulatif'
+        })
       }, 
 
-      })
+    ProfilPage: {
+        screen: ProfilPage,
+        navigationOptions: () => ({
+            header: null,
+            title: 'Profil'
+        })
+    },
 
+    SignUp: {
+        screen: SignUp,
+        navigationOptions: () => ({
+            header: null,
+            title:'Créer un compte'
+        })  
+    }, 
+    SignIn: {
+        screen: SignIn,
+        navigationOptions: () => ({
+            header: null,
+            title:'Se connecter'
+        })
+      },
+    SettingPage: {
+        screen: SettingPage,
+        navigationOptions: () => ({
+            header: null,
+            title:'Paramètres'
+        })  
+    }, 
 
+    InputPageProfilHome: {
+        screen: InputPageProfilHome,
+        navigationOptions: () => ({
+            title:'Ajouter une adresse'
+        })  
+    },
+    InputPageProfilWork: {
+        screen: InputPageProfilWork,
+        navigationOptions: () => ({
+            title:'Ajouter une adresse'
+        })  
+    },
+    
+})
 
 export default Navigation = createAppContainer(StackConnectedNavigator)
 
