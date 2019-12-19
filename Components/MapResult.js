@@ -75,7 +75,7 @@ function MapResult(props) {
     if(!props.departure || !props.arrival) {
         return(
             <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#222831'}}>
-                <Text style={{fontSize: 17, marginBottom: 15, color: 'white'}}> Vous n'avez pas choisi d'itinéraire ¯\_( ͠° ͟ʖ °͠ )_/¯ </Text>
+                <Text style={{fontSize: 17, marginBottom: 15, color: 'white'}}> Vous n'avez pas choisi d'itinéraire</Text>
                 <Button style={{backgroundColor: '#00adb5', borderColor: '#00adb5'}} type='primary' onPress={() => props.navigation.navigate('HomePage')}> Home </Button>
             </View> 
         );
