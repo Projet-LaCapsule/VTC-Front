@@ -7,6 +7,7 @@ import ToggleHeader from "./ToggleHeader";
 import { Button } from '@ant-design/react-native';
 
 import {IpAdress} from '../config';
+import SignInPage from './SignInPage';
 
 function SignUp(props) {
     const [firstName, setFirstName] = useState('');
@@ -14,7 +15,31 @@ function SignUp(props) {
     const [email, setEmail] = useState('');
     const [tel, setTel] = useState('');
     const [password, setPassword] = useState('');
+   /*  const [signedIn, setSignedIn] = false ;
+    const [name, setName] = "";
+    const [photoUrl, setPhotoUrl] = ""; */
 
+    /* var signIn = async () => {
+    try {
+      const result = await Expo.Google.logInAsync({
+        androidClientId: "392552092001-e89sglqj3s7bpok9ojtd3i523hbnf57c.apps.googleusercontent.com",
+        //iosClientId : "YOUR_CLIENT_ID_HERE",        
+        scopes: ["profile", "email"]
+      })
+
+      if (result.type === "success") {
+          setSignedIn({ signedIn: true})
+          setName({ name:result.user.name })
+          setPhoto({ photoUrl: result.user.photoUrl})
+          console.log('console log result', result);
+      } else {
+        console.log("cancelled")
+      } 
+    } catch (e) {
+      console.log("error", e)
+    }
+}
+ */
     var handleSubmit = () => {
         //Récupere les infos des inputs
         var signupData = JSON.stringify({
@@ -61,7 +86,7 @@ function SignUp(props) {
             <SocialIcon
                 raised={false}
                 type='google'
-                button={true}
+                button={true} 
                 style={styles.socialButton}
             />
             <SocialIcon

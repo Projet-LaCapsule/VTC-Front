@@ -1,30 +1,29 @@
 
 import React, {useState, useEffect, Component} from 'react';
-import { View, Text, TextInput, Button, KeyboardAvoidingView, AsyncStorage, ScrollView, StyleSheet} from 'react-native';
+import { View, Text, TextInput, Button, KeyboardAvoidingView, AsyncStorage, ScrollView, StyleSheet, Platform} from 'react-native';
 import ToggleHeader from "./ToggleHeader";
 import { Tile } from 'react-native-elements';
-import imagetile from '../assets/taxiMin.jpg';
-
+import imagetile from '../assets/taxi.jpg';
 import DatePicker from 'react-native-datepicker';
 import {connect} from 'react-redux';
 import _ from 'lodash';
 import AntIcon from "react-native-vector-icons/AntDesign";
 import {ApiAddressGoogle} from '../config';
+import * as Location  from 'expo-location';
+import * as Permissions from 'expo-permissions';
+
 
 var ladate=new Date();
 var datedujour = ladate.getDate()+"/"+(ladate.getMonth()+1)+"/"+ladate.getFullYear();
 var timeDay = ladate.getHours()+" h"+" "+ladate.getMinutes();
 
-
-
-
-
 class HomePage extends Component {   
+   _isMounted = false;
 
   constructor() {
     super()
-
-    this.state = {
+    
+      this.state = {
       departure: '',
       arrival: '',
       date: datedujour,
@@ -32,59 +31,91 @@ class HomePage extends Component {
       positionDeparture: {lat: null, long: null},
       positionArrival: {lat: null, long: null},
       predictionsDeparture: [],
-      predictionsArrival: []
+      predictionsArrival: [],
+      location: null,
+      errorMessage: null,  
+      address: null,    
+      
     }
   }
 
   componentDidMount() {
-    var ctx = this;
-    AsyncStorage.getItem("userVTC",
+
+    this._isMounted = true;
+    Location.watchPositionAsync({distanceInterval: 5}, 
+    (location) => {
+      console.log('console log-->', location);
+      if(this._isMounted){
+          this.setState({location: location});
+          console.log('location coords', location.coords.latitude);
+          var lat = location.coords.latitude;
+          var long = location.coords.longitude;
+          console.log('console log long',long)
+          fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&key=AIzaSyAtFn7k4aG6d0U_UFKwBqRamPVAvkxuu6c`)
+              .then(response => {
+                return response.json();
+               })
+              .then(data => {
+                console.log('MY GOOGLE lAT and LONG --------->', data.results[0].formatted_address);
+                 var cpyLoc = {...this.state.departure};
+                 cpyLoc = data.results[0].formatted_address ; 
+                 this.setState({departure: cpyLoc});
+                 console.log('console.log address',this.state.departure)
+               })
+              .catch(err => {
+                console.log(err)
+              })
+    
+            }      
+         }
+       )
+     
+     
+      
+      //asyncStorage keep info
+      var ctx = this;
+      AsyncStorage.getItem("userVTC",
       function(err, data) { 
         if(data) {
           var userData = JSON.parse(data); 
-          console.log('userData --->')
-          console.log(userData);
-
+          //console.log('userData --->')
+          //console.log(userData);
           ctx.props.signUp(userData._id, userData.first_name, userData.last_name, userData.email, userData.tel, userData.password); //enregistre les données pour redux
-          ctx.props.checkStatus(true); 
-
+          ctx.props.checkStatus(true); //Ajouter la durée estimée et le nbre de kms sur mapResult + algo prix en fonction kms
         } else {
           console.log('No user connected');
-          this.props.checkStatus(false); 
+          ctx.props.checkStatus(false); 
         }
       } 
-    )
-  }
-
-
-  getGeocoding = async () => {
+    )    
+   
+    getGeocoding = async () => {
 
     // Transformer Valeur input => 21 rue Test => 21+rue+Test
     var transformAddressDeparture = this.state.departure.split(' ').join('+');
     var transformAddressArrival = this.state.arrival.split(' ').join('+');
 
-
-    console.log('MY ADDRESS DEPARTURE -------------------->', transformAddressDeparture);
-    console.log('MY ADDRESS ARRIVAL -------------------->', transformAddressArrival);
+    //console.log('MY ADDRESS DEPARTURE -------------------->', transformAddressDeparture);
+    //console.log('MY ADDRESS ARRIVAL -------------------->', transformAddressArrival);
 
     fetchDeparture = async () => {
       await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${transformAddressDeparture},+FR&key=${ApiAddressGoogle}`)
-      .then(resonse => {
-        return resonse.json();
+      .then(response => {
+        return response.json();
       })
       .then(data => {
         console.log('MY GOOGLE API DATAS --------->', data);
   
-        console.log('TEST POSITION ---->', data.results[0].geometry.location.lat)
-        console.log('TEST POSITION ---->', data.results[0].geometry.location.lng)
+       // console.log('TEST POSITION ---->', data.results[0].geometry.location.lat)
+        //console.log('TEST POSITION ---->', data.results[0].geometry.location.lng)
         // Crée une copy du state
         var cpyState = {...this.state.positionDeparture};
 
-        console.log('MY CPY STATE ------->', cpyState)
+       // console.log('MY CPY STATE ------->', cpyState)
         // Ajoute Latitude et Longitude dans la copy du state
         cpyState.lat = data.results[0].geometry.location.lat,
         cpyState.long = data.results[0].geometry.location.lng,
-        console.log('MY CPY STATE V2 ------->', cpyState)
+       // console.log('MY CPY STATE V2 ------->', cpyState)
 
         // modifie le state par la copy
         this.setState({positionDeparture: cpyState});
@@ -97,7 +128,7 @@ class HomePage extends Component {
         //   return {...prevState, ...cpyState};
         // });
 
-        console.log('MY STATE ------->', this.state.positionDeparture)
+       // console.log('MY STATE ------->', this.state.positionDeparture)
 
       })
       .catch(err => {
@@ -112,23 +143,22 @@ class HomePage extends Component {
       })
       .then(data => {
   
-        console.log('TEST POSITION ---->', data.results[0].geometry.location.lat)
-        console.log('TEST POSITION ---->', data.results[0].geometry.location.lng)
+        //console.log('TEST POSITION ---->', data.results[0].geometry.location.lat)
+       // console.log('TEST POSITION ---->', data.results[0].geometry.location.lng)
         var cpyState = {...this.state.positionArrival};
 
-        console.log('MY CPY STATE ------->', cpyState)
+       // console.log('MY CPY STATE ------->', cpyState)
         cpyState.lat = data.results[0].geometry.location.lat,
         cpyState.long = data.results[0].geometry.location.lng,
-        console.log('MY CPY STATE V2 ------->', cpyState)
+       // console.log('MY CPY STATE V2 ------->', cpyState)
 
         this.setState({positionArrival: cpyState});
 
       })
       .catch(err => {
-        console.log(err)
+        //console.log(err)
       })
     }
-    
     await fetchDeparture()
     await fetchArrival()
 
@@ -161,7 +191,7 @@ class HomePage extends Component {
       try {
         const result = await fetch(apiUrl);
         const json = await result.json();
-        console.log(json);
+       // console.log(json);
         //Stocke dans un tableau toutes les predictions de l'autocomplete
         this.setState({predictionsArrival: json.predictions})
       } catch(err) {
@@ -169,10 +199,35 @@ class HomePage extends Component {
       }
 
    }
+  }
 
+  componentWillMount() {
+    this._isMounted = false;
+  this._getLocationAsync();
+}
+
+_getLocationAsync = async () => {
+    var { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== 'granted') {
+      this.setState({
+        errorMessage: 'Permission to access location was denied',
+      });
+    }
+    
+   /* Location.watchPositionAsync({distanceInterval: 5}, 
+    (location) => {
+      console.log('console log-->', location);
+      if(this._isMounted){
+          this.setState({location: location});
+      }      
+    }
+   ) */
+}
 
   render() {
-    // Permet de crée un element text pour chaque predictions stocker dans le tableau predictionsDeparture
+
+   
+        // Permet de crée un element text pour chaque predictions stocker dans le tableau predictionsDeparture
     const predictionsRenderDeparture = this.state.predictionsDeparture.map(predictions => (
       <Text style={styles.predictionsStyle} onPress={() => this.setState({departure: predictions.description, predictionsDeparture: []})} key={predictions.id}>  {predictions.description} </Text>
     ))
@@ -180,6 +235,7 @@ class HomePage extends Component {
     const predictionsRenderArrival = this.state.predictionsArrival.map(predictions => (
       <Text style={styles.predictionsStyle} onPress={() => this.setState({arrival: predictions.description, predictionsArrival: []})} key={predictions.id}>  {predictions.description} </Text>
     ))
+
 
     return (
       // Keyboard params
@@ -195,16 +251,16 @@ class HomePage extends Component {
           {/* image */}  
             
             <Tile 
-              titleStyle={{ color: 'black', fontSize: 40}}
+              titleStyle={{ color: 'black', fontSize: 55, }}
               imageSrc={imagetile}
-              captionStyle={{ opacity: 1 }}
+              captionStyle={{ opacity: 2 }}
               title="Ou souhaitez-vous aller ?"
               featured          
             />
 
-              <TextInput style = {styles.input}
+              <TextInput style = {styles.specialInput}
                 underlineColorAndroid = "transparent"
-                placeholder = "Ma position"
+                placeholder = {this.state.departure}
                 placeholderTextColor = "#393e46"
                 autoCapitalize = "none"
                 value= {this.state.departure}
@@ -268,7 +324,7 @@ class HomePage extends Component {
               
 
               {/* footer */}
-              <View style={{ flex: 1, backgroundColor: '#222831', alignItems: 'center', justifyContent: 'center',width: '100%', maxHeight: 60, marginTop: 10 }}>
+              <View style={{ flex: 1, backgroundColor: '#222831', alignItems: 'center', justifyContent: 'center',width: '100%', height: 60, marginTop: 10 }}>
                 <AntIcon name="car" color="#00adb5" size={35} />
                 <Text style = {{color: 'white', fontSize:10}}> Choisissez votre course </Text>
             </View>
@@ -307,11 +363,22 @@ const styles = StyleSheet.create({
       textAlign:'center',
       marginTop: 10
    },
+
+   specialInput :{
+     textAlign:'center',
+     backgroundColor: '#BBBBBB',
+     width: '70%',
+     marginTop: 10,
+      height: 40,
+      padding: 2,
+      fontSize: 11
+
+   },
    submitButton: {
       width: '70%',
       backgroundColor: '#00adb5',
       padding: 10,
-      marginBottom: 15,
+      marginBottom: 40,
       height: 40,
       borderRadius: 3,
       marginTop: 30,
@@ -380,6 +447,4 @@ const styles = StyleSheet.create({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(HomePage);
-
- 
+)(HomePage); 
