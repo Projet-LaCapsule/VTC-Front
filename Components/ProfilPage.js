@@ -11,13 +11,13 @@ const ProfilPage = props => {
       let displayOfficeAddress;
 
       if(props.homeaddress) {
-            displayHomeAddress =  <Text style={{marginLeft: 45, marginBottom: 10, fontSize: 15 ,opacity: 0.6}} onPress={() => props.navigation.navigate('InputPageProfilHome')}> {props.homeaddress}</Text>
+            displayHomeAddress =  <Text style={{marginLeft: 45, marginBottom: 20, fontSize: 15 ,opacity: 0.6}} onPress={() => props.navigation.navigate('InputPageProfilHome')}> <Ionicons style={{marginRight: 9}} name='md-home' size={15} color='black'/> {props.homeaddress}</Text>
       } else {
-            displayHomeAddress =  <Text style={{color: '#006eff', marginLeft: 45, marginBottom: 10}} onPress={() => props.navigation.navigate('InputPageProfilHome')}> Ajouter un domicile </Text>
+            displayHomeAddress =  <Text style={{color: '#006eff', marginLeft: 45, marginBottom: 20}} onPress={() => props.navigation.navigate('InputPageProfilHome')}> Ajouter un domicile </Text>
       }
 
       if(props.officeaddress) {
-            displayOfficeAddress =  <Text style={{marginLeft: 45, marginBottom: 10, fontSize: 15 ,opacity: 0.6}} onPress={() => props.navigation.navigate('InputPageProfilWork')}> {props.officeaddress}</Text>
+            displayOfficeAddress =  <Text style={{marginLeft: 45, marginBottom: 10, fontSize: 15 ,opacity: 0.6}} onPress={() => props.navigation.navigate('InputPageProfilWork')}> <Ionicons style={{marginRight: 9}} name='md-briefcase' size={15} color='black'/> {props.officeaddress}</Text>
       } else {
             displayOfficeAddress =  <Text style={{color: '#006eff', marginLeft: 45, marginBottom: 10}} onPress={() => props.navigation.navigate('InputPageProfilWork')}> Ajouter un lieu de travail </Text>
       }
@@ -53,26 +53,21 @@ const ProfilPage = props => {
                   <ListItem
                         containerStyle={{height: 140, marginTop: 30}}
                         title={
-                              <View style={{ marginBottom: 10, flexDirection:'row'}}>
+                              <View style={{ marginBottom: 20, flexDirection:'row'}}>
                                     <Ionicons style={{marginTop: 2}} name='md-star' size={22} color='black'/>
                                     <Text style={{fontSize: 20}}> Vos adresses :  </Text>
                               </View>
                         }
                         subtitle={
                               <View>
-
-
-                              <Text style={{marginLeft: 30, marginBottom: 10}}> Domicile :</Text>
-                              {displayHomeAddress}
-
-                              <Text style={{marginLeft: 30, marginBottom: 10}}> Travail :</Text>
-                              {displayOfficeAddress}
+                                    {displayHomeAddress}
+                                    {displayOfficeAddress}
                               </View>
                         }
                         bottomDivider
                         /> 
 
-                        <View style={{ marginTop: 10, flexDirection:'row', marginLeft: 10}} >
+                        <View style={{ marginTop: 20, flexDirection:'row', marginLeft: 10}} >
                               <Icon name="settings"></Icon><Text style={{color: '#006eff', fontSize: 16}} onPress={() => props.navigation.navigate('SettingPage')}> Modifier vos paramètres </Text>
                         </View>
 

@@ -1,6 +1,6 @@
 
 import React, {useState, useEffect, Component} from 'react';
-import { View, Text, TextInput, Button, KeyboardAvoidingView, AsyncStorage, ScrollView, StyleSheet, Platform} from 'react-native';
+import { View, Text, TextInput, KeyboardAvoidingView, AsyncStorage, ScrollView, StyleSheet, Platform} from 'react-native';
 import ToggleHeader from "./ToggleHeader";
 import { Tile } from 'react-native-elements';
 import imagetile from '../assets/taxi.jpg';
@@ -11,6 +11,8 @@ import AntIcon from "react-native-vector-icons/AntDesign";
 import {ApiAddressGoogle} from '../config';
 import * as Location  from 'expo-location';
 import * as Permissions from 'expo-permissions';
+import {Ionicons} from '@expo/vector-icons';
+import { Button } from 'react-native-elements';
 
 
 var ladate=new Date();
@@ -90,7 +92,6 @@ class HomePage extends Component {
           ctx.props.checkStatus(false); 
         }
       } 
-
     )
   }
 
@@ -215,7 +216,7 @@ class HomePage extends Component {
       }
 
    }
-  }
+  
 
   componentWillMount() {
     this._isMounted = false;
@@ -258,23 +259,25 @@ _getLocationAsync = async () => {
       <KeyboardAvoidingView behavior="padding" style={{flex: 1}} enabled > 
         <ScrollView style={{flex: 1}} scrollEnabled={true} >
 
-        <View style={{width: '100%', height: '100%',flex:1, alignItems: 'center', margin: 0}}>  
+        <View style={{width: '100%', height: '100%',flex:1, alignItems: 'center', margin: 0, backgroundColor: '#222831'}}>  
           {/* Burger menu */}  
           <ToggleHeader  
             style={styles.toggle}     
-            navigation={this.props.navigation} title="HomePage"  /> 
+            navigation={this.props.navigation} title="VTC-App"  /> 
           
           {/* image */}  
             
             <Tile 
+              containerStyle={{height: 250}}
+              imageContainerStyle={{height: 250}}
               titleStyle={{ color: 'black', fontSize: 55, }}
               imageSrc={imagetile}
               captionStyle={{ opacity: 2 }}
               title="Ou souhaitez-vous aller ?"
               featured          
             />
-
-              <TextInput style = {styles.specialInput}
+            <View style={{flex: 1, flexDirection: 'row'}}>
+            <TextInput style = {styles.specialInput}
                 underlineColorAndroid = "transparent"
                 placeholder = {this.state.departure}
                 placeholderTextColor = "#393e46"
@@ -282,6 +285,12 @@ _getLocationAsync = async () => {
                 value= {this.state.departure}
                 onChangeText={(e) => this.onChangeDeparture(e)}
               />
+
+            <Ionicons onPress={() => this.setState({departure: ''})} style={{marginTop: 20, marginLeft: 8}} name='md-close-circle-outline' size={25} color='#eeeeee'/>
+
+            </View>
+
+              
           
                 {predictionsRenderDeparture}
               <TextInput style = {styles.input}
@@ -306,9 +315,11 @@ _getLocationAsync = async () => {
                 customStyles={{
                   dateIcon: {
                     position: 'absolute',
+                    width:38,
+                    height: 40,
                     left: 0,
-                    top: 4,
-                    marginLeft: 0
+                    marginLeft: 0,
+                    backgroundColor: '#222831'
                   },
                   dateInput: {
                     marginLeft: 36
@@ -333,14 +344,15 @@ _getLocationAsync = async () => {
           
 
                 <Button 
-                  style = {styles.submitButton}
+                  containerStyle = {styles.submitButton}
+                  buttonStyle= {{backgroundColor: '#00adb5'}}
                   title = "Valider"
                   onPress={()=> {this.getGeocoding()}}
                 />              
               
 
               {/* footer */}
-              <View style={{ flex: 1, backgroundColor: '#222831', alignItems: 'center', justifyContent: 'center',width: '100%', height: 60, marginTop: 10 }}>
+              <View style={{ flex: 1, backgroundColor: '#222831', alignItems: 'center', justifyContent: 'center',width: '100%', height: 55, marginTop: 10 }}>
                 <AntIcon name="car" color="#00adb5" size={35} />
                 <Text style = {{color: 'white', fontSize:10}}> Choisissez votre course </Text>
             </View>
@@ -365,6 +377,8 @@ const styles = StyleSheet.create({
       borderColor: '#222831',
       borderWidth: 0.2,
       width: '70%', 
+      backgroundColor: '#eeeeee',
+
     },
 
     input: {
@@ -377,37 +391,36 @@ const styles = StyleSheet.create({
       padding: 10,
       borderRadius: 3,
       textAlign:'center',
-      marginTop: 10
+      marginTop: 10,
+      backgroundColor: '#eeeeee',
    },
 
    specialInput :{
-     textAlign:'center',
-     backgroundColor: '#BBBBBB',
-     width: '70%',
-     marginTop: 10,
+      textAlign:'center',
+      backgroundColor: '#BBBBBB',
+      width: '70%',
+      marginTop: 10,
       height: 40,
       padding: 2,
-      fontSize: 11
-
+      fontSize: 11,
+      marginLeft:  28,
+      borderRadius: 3,
+      backgroundColor: '#eeeeee',
    },
    submitButton: {
       width: '70%',
-      backgroundColor: '#00adb5',
-      padding: 10,
-      marginBottom: 40,
-      height: 40,
+      //padding: 10,
       borderRadius: 3,
-      marginTop: 30,
       color: 'white',
       textAlign:'center',
       
    },
       predictionsStyle: {
-      backgroundColor: 'white',
+      backgroundColor: '#eeeeee',
       padding: 8,
       fontSize: 16,
       borderWidth: 0.5,
-      width: '70%'
+      width: '70%',
     }
    
  });

@@ -40,9 +40,9 @@ function SignIn(props) {
             navigation={props.navigation}   /> 
        
             {/* <Text style={{marginBottom: 25, fontSize: 18}}> Connectez Vous </Text> */}
-            
-            <TextInput style={styles.textForm} value={email} onChangeText={e => setEmail(e)} placeholder='Email'/>
-            <TextInput style={styles.textForm} value={password} onChangeText={e => setPassword(e)} placeholder='Password'/>
+                <TextInput style={styles.textFormMail} value={email} onChangeText={e => setEmail(e)} placeholder='Email'/>
+                <TextInput style={styles.textForm} value={password} onChangeText={e => setPassword(e)} placeholder='Password'/> 
+           
 
             <Button style={styles.button} onPress={() => handleSubmit()} > Se Connecter </Button>
 
@@ -76,6 +76,16 @@ const styles = StyleSheet.create({
         borderColor: '#e0e0e0',
         borderRadius: 5,
         paddingLeft: 9
+    },
+    textFormMail: {
+        width: '70%',
+        height: 35,
+        borderBottomWidth: 1,
+        marginBottom: 10,
+        borderColor: '#e0e0e0',
+        borderRadius: 5,
+        paddingLeft: 9,
+        marginTop: 15
     }
   });
 

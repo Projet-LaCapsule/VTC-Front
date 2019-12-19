@@ -7,7 +7,7 @@ import { Button, } from '@ant-design/react-native';
 
 import {IpAdress} from '../config';
 
-function SignUp(props) {
+function SettingPage(props) {
     var propsTel = props.tel.toString();
 
     const [firstName, setFirstName] = useState(props.firstName);
@@ -25,24 +25,24 @@ function SignUp(props) {
     //     change
     // })
     return( 
-        <ScrollView style={{flex: 1}} scrollEnabled={true}>
+        <ScrollView style={{flex: 1}} scrollEnabled={true}> 
             <View style={styles.container}>
                     <Text style={{marginBottom: 40, fontSize: 25}}> Modifier le Compte </Text>
                     <Button style={{marginLeft: 210}} disabled={disabled}> Save </Button>
                     <View style={styles.test}>
-                        <Input label='Prenom' style={styles.textForm} value={firstName} onChangeText={e => setFirstName(e)} />
+                        <Input label='Prenom' style={styles.textForm} value={firstName} onChangeText={e => setFirstName(e)} disabled />
                     </View>
                     <View style={styles.test}>
-                        <Input label='Nom' style={styles.textForm} value={lastName} onChangeText={e => setLastName(e)} /> 
+                        <Input label='Nom' style={styles.textForm} value={lastName} onChangeText={e => setLastName(e)} disabled /> 
                     </View>
                     <View style={styles.test}>
-                        <Input label='Email' style={styles.textForm} value={email} onChangeText={e => setEmail(e)} /> 
+                        <Input label='Email' style={styles.textForm} value={email} onChangeText={e => setEmail(e)} disabled /> 
                     </View>
                     <View style={styles.test}>
-                        <Input label='Tel' style={styles.textForm} value={tel} onChangeText={e => setTel(e)} /> 
+                        <Input label='Tel' style={styles.textForm} value={tel} onChangeText={e => setTel(e)} disabled /> 
                     </View>
                     <View style={styles.test}>
-                        <Input label='Password' secureTextEntry={true} style={styles.textForm} value={password} onChangeText={e => setPassword(e)} /> 
+                        <Input label='Password' secureTextEntry={true} style={styles.textForm} value={password} onChangeText={e => setPassword(e)} disabled /> 
                     </View>
             </View>
         </ScrollView>
@@ -104,4 +104,4 @@ const styles = StyleSheet.create({
   export default connect(
     mapStateToProps,
     null
-  ) (SignUp);
+  ) (SettingPage);
