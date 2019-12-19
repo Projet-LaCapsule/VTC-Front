@@ -1,6 +1,6 @@
 
 import React, {useState, useEffect, Component} from 'react';
-import { View, Text, TextInput, Button, KeyboardAvoidingView, AsyncStorage, ScrollView, StyleSheet, Platform} from 'react-native';
+import { View, Text, TextInput, KeyboardAvoidingView, AsyncStorage, ScrollView, StyleSheet, FlatList} from 'react-native';
 import ToggleHeader from "./ToggleHeader";
 import { Tile } from 'react-native-elements';
 import imagetile from '../assets/taxi.jpg';
@@ -11,6 +11,8 @@ import AntIcon from "react-native-vector-icons/AntDesign";
 import {ApiAddressGoogle} from '../config';
 import * as Location  from 'expo-location';
 import * as Permissions from 'expo-permissions';
+import {Ionicons} from '@expo/vector-icons';
+import { Button } from 'react-native-elements';
 
 
 var ladate=new Date();
@@ -104,7 +106,6 @@ class HomePage extends Component {
           ctx.props.checkStatus(false); 
         }
       } 
-
     )
   }
 
@@ -185,7 +186,7 @@ class HomePage extends Component {
     //Envoie dans redux les adresses, positions, date, heure de la course
     await this.props.searchTravel(this.state.departure, this.state.arrival, this.state.date, this.state.hourDeparture, this.state.positionDeparture.lat, this.state.positionDeparture.long, this.state.positionArrival.lat, this.state.positionArrival.long);
     this.setState({
-      departure: '',
+      //departure: '',
       arrival: '',
       data: datedujour,
       hourDeparture: timeDay,
@@ -229,7 +230,7 @@ class HomePage extends Component {
       }
 
    }
-  }
+  
 
   
 
@@ -249,25 +250,27 @@ class HomePage extends Component {
     return (
       // Keyboard params
       <KeyboardAvoidingView behavior="padding" style={{flex: 1}} enabled > 
-        <ScrollView style={{flex: 1}} scrollEnabled={true} >
+        <ScrollView style={{flex: 1}} scrollEnabled={true} contentContainerStyle={styles.container} >
 
-        <View style={{width: '100%', height: '100%',flex:1, alignItems: 'center', margin: 0}}>  
+        <View style={{width: '100%', flex:1, alignItems: 'center', margin: 0, backgroundColor: '#222831'}}>  
           {/* Burger menu */}  
           <ToggleHeader  
             style={styles.toggle}     
-            navigation={this.props.navigation} title="HomePage"  /> 
+            navigation={this.props.navigation} title="VTC-App"  /> 
           
           {/* image */}  
-            
+           
             <Tile 
+              containerStyle={{height: 250}}
+              imageContainerStyle={{height: 250}}
               titleStyle={{ color: 'black', fontSize: 55, }}
               imageSrc={imagetile}
               captionStyle={{ opacity: 2 }}
               title="Ou souhaitez-vous aller ?"
               featured          
             />
-
-              <TextInput style = {styles.specialInput}
+            <View style={{flex: 1, flexDirection: 'row', maxHeight: 50, marginTop: 20, marginBottom: 2}}>
+            <TextInput style = {styles.specialInput}
                 underlineColorAndroid = "transparent"
                 placeholder = {this.state.departure}
                 placeholderTextColor = "#393e46"
@@ -275,9 +278,12 @@ class HomePage extends Component {
                 value= {this.state.departure}
                 onChangeText={(e) => this.onChangeDeparture(e)}
               />
-          
+            <Ionicons onPress={() => this.setState({departure: ''})} style={{marginTop: 5, marginLeft: 8}} name='md-close-circle-outline' size={25} color='#eeeeee'/>
+             </View>  
+            
                 {predictionsRenderDeparture}
-              <TextInput style = {styles.input}
+           
+            <TextInput style = {styles.input}
                 underlineColorAndroid = "transparent"
                 placeholder = "  Ou allez-vous ?  "
                 placeholderTextColor = "#393e46"
@@ -285,8 +291,11 @@ class HomePage extends Component {
                 value= {this.state.arrival}
                 onChangeText={(e) => this.onChangeDestination(e)}
               />
+            
+           
+           
               {predictionsRenderArrival}
-              <DatePicker
+           <DatePicker
                 style = {styles.datepicker}
                 date={this.state.date}  //initial date from state
                 mode="datetime" //The enum of date, datetime and time
@@ -299,9 +308,11 @@ class HomePage extends Component {
                 customStyles={{
                   dateIcon: {
                     position: 'absolute',
+                    width:38,
+                    height: 40,
                     left: 0,
-                    top: 4,
-                    marginLeft: 0
+                    marginLeft: 0,
+                    backgroundColor: '#222831'
                   },
                   dateInput: {
                     marginLeft: 36
@@ -316,29 +327,32 @@ class HomePage extends Component {
                   this.setState({hourDeparture: timeNewDay})
                 }}
               />
-
-                <TextInput style = {styles.input}
+          
+          
+           <TextInput style = {styles.input}
                   underlineColorAndroid = "transparent"
                   value = {`${this.state.hourDeparture}`}
                   placeholderTextColor = "#393e46" 
                   autoCapitalize = "none"
                 />
           
-
-                <Button 
-                  style = {styles.submitButton}
+           <Button 
+                  containerStyle = {styles.submitButton}
+                  buttonStyle= {{backgroundColor: '#00adb5'}}
                   title = "Valider"
                   onPress={()=> {this.getGeocoding()}}
                 />              
               
 
               {/* footer */}
-              <View style={{ flex: 1, backgroundColor: '#222831', alignItems: 'center', justifyContent: 'center',width: '100%', height: 60, marginTop: 10 }}>
-                <AntIcon name="car" color="#00adb5" size={35} />
-                <Text style = {{color: 'white', fontSize:10}}> Choisissez votre course </Text>
-            </View>
+             
 
           </View>   
+
+           <View style = {styles.bottom}>
+                <AntIcon name="car" color="#00adb5" size={35} />
+                <Text style = {{color: 'white', fontSize:10}}> Choisissez votre course </Text>
+          </View> 
           </ScrollView>
       </KeyboardAvoidingView>
     );
@@ -352,17 +366,31 @@ const styles = StyleSheet.create({
     toggle: {
       flex: 1,
       marginTop: 0,
+     
+    },
+    container:{
+   flex: 1,
+   justifyContent: 'space-around',
+},
+
+    bottom : {
+      width: '100%', 
+      backgroundColor: '#222831', 
+      justifyContent: 'center', 
+      alignItems: 'center',
       
     },
      datepicker: {
       borderColor: '#222831',
       borderWidth: 0.2,
       width: '70%', 
+      backgroundColor: '#eeeeee',
+      marginBottom: 10,
+
     },
 
     input: {
       width: '70%', 
-      margin: 8,
       height: 40,
       borderWidth: 0,
       backgroundColor: '#BBBBBB',
@@ -370,30 +398,39 @@ const styles = StyleSheet.create({
       padding: 10,
       borderRadius: 3,
       textAlign:'center',
-      marginTop: 10
+      marginBottom: 10,
+      backgroundColor: '#eeeeee',
    },
 
    specialInput :{
-     textAlign:'center',
-     backgroundColor: '#BBBBBB',
-     width: '70%',
-     marginTop: 10,
+      textAlign:'center',
+      backgroundColor: '#BBBBBB',
+      width: '70%',
       height: 40,
       padding: 2,
-      fontSize: 11
-
+      fontSize: 11,
+      marginLeft:  28,
+      borderRadius: 3,
+      backgroundColor: '#eeeeee',
    },
    submitButton: {
       width: '70%',
+<<<<<<< HEAD
       //padding: 10,
       borderRadius: 3,      
+=======
+      marginTop: 20,
+      borderRadius: 3,
+      
+      
+>>>>>>> 2067d28fe4c0978ee23248fe2e7def56a0fcf98e
    },
       predictionsStyle: {
-      backgroundColor: 'white',
+      backgroundColor: '#eeeeee',
       padding: 8,
       fontSize: 16,
       borderWidth: 0.5,
-      width: '70%'
+      width: '70%',
     }
    
  });

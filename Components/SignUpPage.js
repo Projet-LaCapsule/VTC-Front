@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {View, Text, StyleSheet, TextInput, AsyncStorage} from 'react-native';
+import {View, Text, StyleSheet, TextInput, AsyncStorage, ScrollView, KeyboardAvoidingView} from 'react-native';
 import { SocialIcon } from 'react-native-elements'
 import {connect} from 'react-redux';
 import ToggleHeader from "./ToggleHeader";
@@ -80,48 +80,52 @@ function SignUp(props) {
     }
 
     return( 
-        <View style={styles.container}>
-            {/* Burger menu */}  
-            <ToggleHeader  
-            style={styles.toggle}     
-             navigation={props.navigation}  /> 
-            <Text style={{marginBottom: 15}} onPress={() => props.navigation.navigate('SignIn')}> Avez-vous un compte ? </Text>
-            <View style={styles.separate} /> 
-            
-            <Text style={{marginBottom: 15}}> Connectez-vous avec : </Text>
+      <KeyboardAvoidingView behavior="padding" style={{flex: 1}} enabled > 
+        <ScrollView style={{flex: 1}} scrollEnabled={true} >
+          <View style={styles.container}>
+              {/* Burger menu */}  
+              <ToggleHeader  
+              style={styles.toggle}     
+              navigation={props.navigation}  /> 
+              <Text style={{marginBottom: 15, marginTop: 20}} onPress={() => props.navigation.navigate('SignIn')}> Avez-vous un compte ? </Text>
+              <View style={styles.separate} /> 
+              
+              <Text style={{marginBottom: 15}}> Connectez-vous avec : </Text>
 
-            <SocialIcon
-                raised={false}
-                type='google'
-                button={true} 
-                style={styles.socialButton}
-            />
-            <SocialIcon
-                raised={false}
-                type='facebook'
-                button={true}
-                style={styles.socialButton}
-            />
-            <SocialIcon
-                raised={false}
-                type='linkedin'
-                button={true}
-                style={[styles.socialButton, {marginBottom: 30}]}
-            />
+              <SocialIcon
+                  raised={false}
+                  type='google'
+                  button={true} 
+                  style={styles.socialButton}
+              />
+              <SocialIcon
+                  raised={false}
+                  type='facebook'
+                  button={true}
+                  style={styles.socialButton}
+              />
+              <SocialIcon
+                  raised={false}
+                  type='linkedin'
+                  button={true}
+                  style={[styles.socialButton, {marginBottom: 30}]}
+              />
 
-            <View style={styles.separate} /> 
-            <Text> ou </Text>
-            <Text style={{marginBottom: 10}}> Créez un compte </Text>
-            
-            <TextInput style={styles.textForm} value={lastName} onChangeText={e => setLastName(e)} placeholder='Nom'/>
-            <TextInput style={styles.textForm} value={firstName} onChangeText={e => setFirstName(e)} placeholder='Prenom'/>
-            <TextInput style={styles.textForm} value={email} onChangeText={e => setEmail(e)} placeholder='Email'/>
-            <TextInput style={styles.textForm} value={tel} onChangeText={e => setTel(e)} placeholder='Telephone'/>
-            <TextInput style={styles.textForm} value={password} onChangeText={e => setPassword(e)} placeholder='Password'/>
+              <View style={styles.separate} /> 
+              <Text> ou </Text>
+              <Text style={{marginBottom: 10}}> Créez un compte </Text>
+              
+              <TextInput style={styles.textForm} value={lastName} onChangeText={e => setLastName(e)} placeholder='Nom'/>
+              <TextInput style={styles.textForm} value={firstName} onChangeText={e => setFirstName(e)} placeholder='Prenom'/>
+              <TextInput style={styles.textForm} value={email} onChangeText={e => setEmail(e)} placeholder='Email'/>
+              <TextInput style={styles.textForm} value={tel} onChangeText={e => setTel(e)} placeholder='Telephone'/>
+              <TextInput style={styles.textForm} value={password} onChangeText={e => setPassword(e)} placeholder='Password'/>
 
-            <Button style={styles.button} onPress={() => handleSubmit()} > Confirmer </Button>
+              <Button style={styles.button} onPress={() => handleSubmit()} > Confirmer </Button>
 
-        </View>
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
     );
 }
 
@@ -145,7 +149,8 @@ const styles = StyleSheet.create({
     button: {
         marginLeft: 200,
         marginTop: 20,
-        height: 40
+        height: 40,
+        marginBottom: 40
     },
     textForm: {
         width: '70%',

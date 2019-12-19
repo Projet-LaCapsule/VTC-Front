@@ -4,7 +4,6 @@ import {Ionicons} from '@expo/vector-icons';
 import {connect} from 'react-redux';
 import Modal from "react-native-modalbox";
 import ToggleHeader from "./ToggleHeader"
-import SendSMS from 'react-native-sms'
 
 
 import { Card, WingBlank, Button, InputItem } from '@ant-design/react-native';
@@ -45,23 +44,7 @@ function MapResult(props) {
                 return response.json();
             })
             .then( datas => {
-                function sendMessage() {
-                    SendSMS.send({
-                        body: 'My message',
-                        recipients: ['0616095195'],
-                        successTypes: ['sent', 'queued'],
-                        allowAndroidSendWithoutReadPermission: true
-                    }, (completed, cancelled, error) => {
-                        if(completed){
-                            Alert.alert('SMS Sent Successfully.')
-                          }else if(cancelled){
-                            console.log('SMS Sent Cancelled.');
-                          }else if(error){
-                            console.log('Some error occured.');
-                          }                 
-                    })
-                }
-                sendMessage();
+                
                 console.log('data addTravel --->', datas);
                 props.tripConfirmed();
 
