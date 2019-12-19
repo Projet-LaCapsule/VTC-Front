@@ -41,8 +41,18 @@ class HomePage extends Component {
     }
   }
 
-  componentDidMount() {
+  _getLocationAsync = async () => {
+    var { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== 'granted') {
+      this.setState({
+        errorMessage: 'Permission to access location was denied',
+      });
+    }
+  }
 
+  componentWillMount() {
+    this._isMounted = false;
+    this._getLocationAsync();
     this._isMounted = true;
     Location.watchPositionAsync({distanceInterval: 5}, 
     (location) => {
@@ -71,9 +81,13 @@ class HomePage extends Component {
             }      
          }
        )
+  }
+
+  componentDidMount() {
+
+    
      
-     
-      
+    
       //asyncStorage keep info
       var ctx = this;
       AsyncStorage.getItem("userVTC",
@@ -218,28 +232,7 @@ class HomePage extends Component {
    }
   
 
-  componentWillMount() {
-    this._isMounted = false;
-  this._getLocationAsync();
-}
-
-_getLocationAsync = async () => {
-    var { status } = await Permissions.askAsync(Permissions.LOCATION);
-    if (status !== 'granted') {
-      this.setState({
-        errorMessage: 'Permission to access location was denied',
-      });
-    }
-    
-   /* Location.watchPositionAsync({distanceInterval: 5}, 
-    (location) => {
-      console.log('console log-->', location);
-      if(this._isMounted){
-          this.setState({location: location});
-      }      
-    }
-   ) */
-}
+  
 
   render() {
 
@@ -422,10 +415,15 @@ const styles = StyleSheet.create({
    },
    submitButton: {
       width: '70%',
+<<<<<<< HEAD
+      //padding: 10,
+      borderRadius: 3,      
+=======
       marginTop: 20,
       borderRadius: 3,
       
       
+>>>>>>> 2067d28fe4c0978ee23248fe2e7def56a0fcf98e
    },
       predictionsStyle: {
       backgroundColor: '#eeeeee',
