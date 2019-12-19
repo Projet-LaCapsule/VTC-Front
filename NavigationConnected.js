@@ -113,13 +113,7 @@ const StackConnectedNavigator = createStackNavigator(
             title:'Se connecter'
         })
       },
-    SettingPage: {
-        screen: SettingPage,
-        navigationOptions: () => ({
-            header: null,
-            title:'Paramètres'
-        })  
-    }, 
+    SettingPage:SettingPage, 
 
     InputPageProfilHome: {
         screen: InputPageProfilHome,

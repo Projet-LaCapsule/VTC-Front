@@ -10,7 +10,7 @@ const HamburgerMenu = props => {
     <Icon
       color="#fff"
       name="menu"
-     
+      size={30}
       onPress={() => {props.navigation.dispatch(DrawerActions.openDrawer())}}
     />
    
