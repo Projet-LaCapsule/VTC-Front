@@ -1,4 +1,3 @@
-
 import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, Dimensions, ScrollView, AsyncStorage} from 'react-native';
 import MapView , {Marker, Polyline} from 'react-native-maps';
@@ -8,7 +7,6 @@ import ToggleHeader from "./ToggleHeader";
 import { Card, WingBlank, List, Button } from '@ant-design/react-native';
 import decodePolyline from 'decode-google-map-polyline'
 import {ApiAddressGoogle} from '../config';
-import { createIconSetFromFontello } from 'react-native-vector-icons';
 const Item = List.Item
 
 function MapResult(props) {
@@ -50,10 +48,13 @@ function MapResult(props) {
     
                     // Recupere le temps pour aller du point A au point B
                     var tempsItineraire = data.routes[0].legs[0].duration.text;
-
+                    console.log('Distance 1', distanceItineraire)
                     var splitDistance = data.routes[0].legs[0].distance.text.split(' ');
+                    console.log('Distance 2', splitDistance)
+
                     var priceTrip = splitDistance[0] * 1.85;
-    
+                    console.log('Distance 3', priceTrip)
+
                     //Met a jour les states
                     setPolylineCoordinate(cpy);
                     setDistance(distanceItineraire);
@@ -83,7 +84,7 @@ function MapResult(props) {
         return (
             <View style={styles.container}>
 
-              <ToggleHeader navigation={props.navigation} title="MapResult" />     
+              {/* <ToggleHeader navigation={props.navigation} title="MapResult" />      */}
                 <MapView style={styles.mapStyle} region={{latitude: props.positionDeparture.lat, longitude: props.positionDeparture.long, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }}>
 
                     <Polyline
@@ -105,26 +106,25 @@ function MapResult(props) {
                     />
                 </MapView>
                 <ScrollView style={{flex: 1}} scrollEnabled={true} >
-                    <View style={{marginTop: 1}}>
-                        <WingBlank size='sm'>  
-                            <Card>
-                                <Card.Body>
-                                    <List >
-                                        <Item extra={ <Ionicons name='md-radio-button-on' size={20} color='#32a6ff'/>}> {props.departure} </Item>
-                                        <Item extra={ <Ionicons name='md-radio-button-on' size={20} color='#ea1919'/>}> {props.arrival} </Item>
-                                        <View style={{flex: 1, flexDirection: 'row', justifyContent: "space-between"}}>
-                                            <Text style={styles.textForm}> {distance} </Text>
-                                            <Text style={styles.textFormPrice}> {price} €</Text>          
-                                        </View>
-                                        
-                                    </List>
-                                </Card.Body>
-                                <Card.Footer 
-                                    content={<Button style={{width: 70, height: 40}}> <Ionicons name='md-arrow-back' size={17} color='black'/> </Button>}
-                                    extra={<Button style={{width: 120, height: 40, marginLeft: 40, backgroundColor: '#7d35f2', borderColor: '#7d35f2'}} type='primary' onPress={() => {props.handleClickChoose(price, distance, timeTravel); handleClick()} }> Choisir </Button>}
-                                />
-                            </Card>
-                        </WingBlank>     
+                    <View style={{marginTop: 1, backgroundColor: '#222831'}}>
+                        <View style={{flex:1, flexDirection: 'row'}}>
+                            <Text style={{paddingTop: 20, paddingBottom: 25, paddingLeft: 25, color: 'white', fontSize: 16,}}> {props.departure} </Text>
+                            <Ionicons style={{paddingTop: 20, paddingBottom: 25, marginLeft: 5}} name='md-radio-button-on' size={20} color='#32a6ff'/>
+                        </View>
+                        <View style={styles.separate} /> 
+                        <View style={{flex:1, flexDirection: 'row'}}>
+                            <Text style={{paddingTop: 10, paddingBottom: 25, paddingLeft: 25, color: 'white', fontSize: 16,}}> {props.arrival} </Text>
+                            <Ionicons style={{paddingTop: 10, paddingBottom: 25, marginLeft: 5}} name='md-radio-button-on' size={20} color='#ea1919'/>
+                        </View>
+                        <View style={styles.separate} /> 
+                        <View style={{flex: 1, flexDirection: 'row', justifyContent: "space-between", marginBottom: 5, marginTop: 5}}>
+                            <Text style={styles.textForm}> {distance} </Text>
+                            <Text style={styles.textFormPrice}> {price} €</Text>          
+                        </View>
+                        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', marginTop: 15}}>
+                            <Button style={{width: 70, height: 40, marginBottom: 10, marginLeft: 10, backgroundColor: '#eeeeee', borderColor: '#eeeeee'}}> <Ionicons name='md-arrow-back' size={17} color='black'/> </Button>
+                            <Button style={{width: 120, height: 40, marginBottom: 10, marginRight: 10, backgroundColor: '#00adb5', borderColor: '#00adb5'}} type='primary' onPress={() => {props.handleClickChoose(price, distance, timeTravel); handleClick()} }> Choisir </Button>
+                        </View>
                     </View>   
                 </ScrollView>
             </View>
@@ -135,21 +135,31 @@ function MapResult(props) {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
+      backgroundColor: '#222831'
     },
     mapStyle: {
         width: Dimensions.get('window').width,
-        height: '40%'
+        height: '45%',
     },
     textForm: {
        padding: 10,
        fontSize: 18,
        marginLeft: 6,
+       color: 'white',
     },
     textFormPrice: {
         padding: 10,
         fontSize: 21,
         marginRight: 5,
-     }
+        color: 'white'
+     },
+     separate: {
+         height: 1,
+         backgroundColor: '#c6d0d3',
+         width: '85%',
+         marginBottom: 10,
+         marginLeft: 20
+     },
   });
 
   function mapDispatchToProps(dispatch) {

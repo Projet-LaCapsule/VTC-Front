@@ -69,6 +69,8 @@ const MainDrawer = createDrawerNavigator(
 
 const StackConnectedNavigator = createStackNavigator(
   { 
+      
+    
     MainDrawer: {
         screen : MainDrawer,
         navigationOptions: () => ({
@@ -78,18 +80,22 @@ const StackConnectedNavigator = createStackNavigator(
     MapResult : {
         screen: MapResult,
         navigationOptions: () => ({
-            header: null,
-            title:'Votre recherche'
+            headerStyle: {
+                backgroundColor: '#222831',
+              },
+              headerTintColor: '#eeeeee',
         })
     },
 
     TripOverview: {
         screen: TripOverview,
         navigationOptions: () => ({
-            header: null,
-            title:'Récapitulatif'
+            headerStyle: {
+                backgroundColor: '#222831',
+              },
+              headerTintColor: '#eeeeee',
         })
-      }, 
+    } , 
 
     ProfilPage: {
         screen: ProfilPage,

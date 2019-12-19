@@ -67,7 +67,12 @@ function SignUp(props) {
 
             props.signUp(data.user._id, data.user.first_name, data.user.last_name, data.user.email, data.user.tel, data.user.password, data.user.homeaddress, data.user.officeaddress); //enregistre les données pour redux
             props.checkStatus(true); // Status Connecter
-            props.navigation.navigate('TripOverview'); 
+
+            console.log('Redux Signup', props.price )
+            console.log('Redux Signup', props.distance )
+
+            props.navigation.navigate('HomePage');
+             
         })
         .catch(err => {
             console.log(err)
@@ -177,8 +182,15 @@ const styles = StyleSheet.create({
       }
     }
   }
+
+  function mapStateToProps(state) {
+    return {
+      price: state.Travel.price,
+      distance: state.Travel.distance
+    }
+  }
   
   export default connect(
-      null,
+      mapStateToProps,
       mapDispatchToProps
   ) (SignUp);

@@ -59,21 +59,9 @@ const StackConnectedNavigator = createStackNavigator(
           header: null
       })
   },  
-      MapResult: {
-      screen: MapResult,
-      navigationOptions: () => ({
-          header: null,
-          title: 'Vos recherches'
-      })
-      },
+      MapResult: MapResult,
 
-      TripOverview: {
-      screen: TripOverview,
-      navigationOptions: () => ({
-          header: null,
-          title: 'Overview'
-      })
-      },
+      TripOverview:TripOverview,
       
       })
 
