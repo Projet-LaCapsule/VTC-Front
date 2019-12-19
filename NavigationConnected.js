@@ -19,13 +19,7 @@ import Logout from './Components/Logout';
  
 const MainDrawer = createDrawerNavigator(
   {
-    ProfilPage: {
-        screen: ProfilPage,
-        navigationOptions: () => ({
-                headerLeft: <HeaderBackButton onPress={() => navigation.goBack(null)} />,
-                title:'Page profil'
-        })
-    },
+    
   HomePage: {
   screen: HomePage,
   navigationOptions: () => ({
@@ -33,6 +27,13 @@ const MainDrawer = createDrawerNavigator(
           title:'Accueil'
       })
   },
+  ProfilPage: {
+    screen: ProfilPage,
+    navigationOptions: () => ({
+            headerLeft: <HeaderBackButton onPress={() => navigation.goBack(null)} />,
+            title:'Page profil'
+    })
+},
   UserTrip: {
     screen: UserTrip,
     navigationOptions: () => ({
