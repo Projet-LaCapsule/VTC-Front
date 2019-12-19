@@ -1,8 +1,8 @@
 export default function User(userDatas = {}, action) {
     if(action.type === 'sign') {
-        console.log(userDatas)
-        console.log('Reducer: My action ---->' + action)
-        console.log(action)
+       // console.log(userDatas)
+        //console.log('Reducer: My action ---->' + action)
+        //console.log(action)
 
         var cpyUser = {...userDatas}; 
 
@@ -16,9 +16,13 @@ export default function User(userDatas = {}, action) {
         cpyUser.officeaddress = action.officeaddress
         cpyUser.password = action.password
 
-        console.log('Reducer: My cpyUser ---->')
-        console.log(cpyUser);
+
+        //console.log('Reducer: My cpyUser ---->')
+        //console.log(cpyUser);
+
+       
         userDatas = cpyUser;
+
         return cpyUser
     } else if(action.type === 'saveHomeAddress') {
         var cpyUser = {...userDatas};

@@ -18,18 +18,18 @@ export default function Travel(travel = {}, action) {
             long: action.positionArrival.long
         }
 
-        console.log('SearchTravel ---->', cpyTravel);
+       // console.log('SearchTravel ---->', cpyTravel);
         travel = cpyTravel;
         return cpyTravel;
      } else if(action.type === 'chooseTravel') {
 
-        console.log('Travel  {} ----->', travel);
+        //console.log('Travel  {} ----->', travel);
         var cpyTravel = {...travel};
         cpyTravel.price = action.price;
         cpyTravel.distance = action.distance;
         cpyTravel.time = action.time
 
-        console.log('ChooseTravel ---->', cpyTravel);
+       // console.log('ChooseTravel ---->', cpyTravel);
         return cpyTravel
     } else if(action.type === 'travelConfirmed') {
         var resetTravel = {};
