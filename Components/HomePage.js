@@ -248,7 +248,7 @@ class HomePage extends Component {
 
     return (
       // Keyboard params
-      <KeyboardAvoidingView behavior="padding" style={{flex: 1}} enabled > 
+      <KeyboardAvoidingView  style={{flex: 1}} enabled > 
         <ScrollView style={{flex: 1}} scrollEnabled={true} contentContainerStyle={styles.container} >
 
         <View style={{width: '100%', flex:1, alignItems: 'center', margin: 0, backgroundColor: '#222831'}}>  
@@ -344,14 +344,14 @@ class HomePage extends Component {
               
 
               {/* footer */}
-             
+             <View style = {styles.bottom}>
+                <AntIcon name="car" color="#00adb5" size={35} />
+                <Text style = {{color: 'white', fontSize:10}}> Choisissez votre course </Text>
+          </View>   
 
           </View>   
 
-           <View style = {styles.bottom}>
-                <AntIcon name="car" color="#00adb5" size={35} />
-                <Text style = {{color: 'white', fontSize:10}}> Choisissez votre course </Text>
-          </View> 
+         
           </ScrollView>
       </KeyboardAvoidingView>
     );
@@ -377,6 +377,7 @@ const styles = StyleSheet.create({
       backgroundColor: '#222831', 
       justifyContent: 'center', 
       alignItems: 'center',
+      marginTop: 20,
       
     },
      datepicker: {

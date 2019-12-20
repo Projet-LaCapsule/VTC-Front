@@ -108,13 +108,13 @@ function MapResult(props) {
                 <ScrollView style={{flex: 1}} scrollEnabled={true} >
                     <View style={{marginTop: 1, backgroundColor: '#222831'}}>
                         <View style={{flex:1, flexDirection: 'row'}}>
-                            <Text style={{paddingTop: 20, paddingBottom: 25, paddingLeft: 25, color: 'white', fontSize: 16,}}> {props.departure} </Text>
+                            <Text style={{paddingTop: 20, paddingBottom: 25, paddingLeft: 25, color: 'white', fontSize: 14}}> {props.departure} </Text>
                             <Ionicons style={{paddingTop: 20, paddingBottom: 25, marginLeft: 5}} name='md-radio-button-on' size={20} color='#32a6ff'/>
                         </View>
                         <View style={styles.separate} /> 
                         <View style={{flex:1, flexDirection: 'row'}}>
                             <Text style={{paddingTop: 10, paddingBottom: 25, paddingLeft: 25, color: 'white', fontSize: 16,}}> {props.arrival} </Text>
-                            <Ionicons style={{paddingTop: 10, paddingBottom: 25, marginLeft: 5}} name='md-radio-button-on' size={20} color='#ea1919'/>
+                            <Ionicons style={{paddingTop: 15, paddingBottom: 25, marginLeft: 5}} name='md-radio-button-on' size={20} color='#ea1919'/>
                         </View>
                         <View style={styles.separate} /> 
                         <View style={{flex: 1, flexDirection: 'row', justifyContent: "space-between", marginBottom: 5, marginTop: 5}}>

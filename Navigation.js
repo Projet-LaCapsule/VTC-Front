@@ -10,7 +10,7 @@ import { ShadowPropTypesIOS } from 'react-native';
  function Navigation(props) {  
      if(props.isConnected) {
          return (
-            <NavigationConnected/>         
+            <NavigationConnected/>                  
         );
      } else {
         return (

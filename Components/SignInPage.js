@@ -25,12 +25,13 @@ function SignIn(props) {
 
                 props.signUp(data.user._id, data.user.first_name, data.user.last_name, data.user.email, data.user.tel, data.user.password, data.user.homeaddress, data.user.officeaddress); //enregistre les données pour redux
                 props.checkStatus(true); // Status Connecter
-                props.navigation.navigate('SettingPage');
+                
             }
         })
         .catch(err => {
             console.log('err fetch',err)
         })
+        props.navigation.navigate('HomePage');        
     }
 
     return( 
