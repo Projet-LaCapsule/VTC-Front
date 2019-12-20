@@ -41,7 +41,7 @@ function SignIn(props) {
        
             {/* <Text style={{marginBottom: 25, fontSize: 18}}> Connectez Vous </Text> */}
                 <TextInput style={styles.textFormMail} value={email} onChangeText={e => setEmail(e)} placeholder='Email'/>
-                <TextInput style={styles.textForm} value={password} onChangeText={e => setPassword(e)} placeholder='Password'/> 
+                <TextInput style={styles.textForm} value={password} onChangeText={e => setPassword(e)} placeholder='Password' secureTextEntry={true} /> 
            
 
             <Button style={styles.button} onPress={() => handleSubmit()} > Se Connecter </Button>

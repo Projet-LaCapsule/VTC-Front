@@ -119,7 +119,7 @@ function SignUp(props) {
               <TextInput style={styles.textForm} value={firstName} onChangeText={e => setFirstName(e)} placeholder='Prenom'/>
               <TextInput style={styles.textForm} value={email} onChangeText={e => setEmail(e)} placeholder='Email'/>
               <TextInput style={styles.textForm} value={tel} onChangeText={e => setTel(e)} placeholder='Telephone'/>
-              <TextInput style={styles.textForm} value={password} onChangeText={e => setPassword(e)} placeholder='Password'/>
+              <TextInput style={styles.textForm} value={password} onChangeText={e => setPassword(e)} placeholder='Password' secureTextEntry={true} />
 
               <Button style={styles.button} onPress={() => handleSubmit()} > Confirmer </Button>
 
