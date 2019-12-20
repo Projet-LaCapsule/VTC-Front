@@ -53,6 +53,11 @@ class HomePage extends Component {
   componentWillMount() {
     this._isMounted = false;
     this._getLocationAsync();
+    
+  }
+
+  componentDidMount() {
+
     this._isMounted = true;
     Location.watchPositionAsync({distanceInterval: 5}, 
     (location) => {
@@ -63,7 +68,7 @@ class HomePage extends Component {
           var lat = location.coords.latitude;
           var long = location.coords.longitude;
           console.log('console log long',long)
-          fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&key=AIzaSyAtFn7k4aG6d0U_UFKwBqRamPVAvkxuu6c`)
+          fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&key=${ApiAddressGoogle}`)
               .then(response => {
                 return response.json();
                })
@@ -81,12 +86,6 @@ class HomePage extends Component {
             }      
          }
        )
-  }
-
-  componentDidMount() {
-
-    
-     
     
       //asyncStorage keep info
       var ctx = this;

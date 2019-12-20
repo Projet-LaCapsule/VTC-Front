@@ -66,9 +66,9 @@ function MapResult(props) {
             <ScrollView style={{flex: 1}} scrollEnabled={true} >
                 <View >
                         <WingBlank size='sm'>  
-                            <Card>
+                            <Card style={{backgroundColor: '#eeeeee'}}>
                                 <Text style={styles.titleCard}> Récapitulatif de la course</Text>
-                                <Card.Body>
+                                <Card.Body style={{backgroundColor: '#eeeeee'}}>
                                     <InputItem style={styles.textForm} value={props.departure} editable={false}> Départ : </InputItem>
                                     <InputItem style={styles.textForm} value={props.arrival} editable={false}> Arrivé : </InputItem>
                                     <InputItem style={styles.textForm} value={`${props.price} €`} editable={false}> Prix : </InputItem>
@@ -77,7 +77,6 @@ function MapResult(props) {
                                     <InputItem style={styles.textForm} value={props.date} extra={props.hourDeparture} editable={false}> Date : </InputItem>
                                 </Card.Body>
                                 <Card.Footer 
-                                    content={<Button style={{width: 70, height: 40}}> <Ionicons name='md-arrow-back' size={17} color='black'/> </Button>}
                                     extra={<Button style={{width: 120, height: 40, marginLeft: 40, backgroundColor: '#00adb5', borderColor: '#00adb5'}} type='primary' onPress={() => handleClickModal()} > Confirm </Button>}
                                 />
                             </Card>

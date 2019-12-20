@@ -121,10 +121,7 @@ function MapResult(props) {
                             <Text style={styles.textForm}> {distance} </Text>
                             <Text style={styles.textFormPrice}> {price} €</Text>          
                         </View>
-                        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', marginTop: 15}}>
-                            <Button style={{width: 70, height: 40, marginBottom: 10, marginLeft: 10, backgroundColor: '#eeeeee', borderColor: '#eeeeee'}}> <Ionicons name='md-arrow-back' size={17} color='black'/> </Button>
-                            <Button style={{width: 120, height: 40, marginBottom: 10, marginRight: 10, backgroundColor: '#00adb5', borderColor: '#00adb5'}} type='primary' onPress={() => {props.handleClickChoose(price, distance, timeTravel); handleClick()} }> Choisir </Button>
-                        </View>
+                            <Button style={{width: 120, height: 40, marginBottom: 10, marginTop: 5 , marginLeft: '65%' ,backgroundColor: '#00adb5', borderColor: '#00adb5'}} type='primary' onPress={() => {props.handleClickChoose(price, distance, timeTravel); handleClick()} }> Choisir </Button>
                     </View>   
                 </ScrollView>
             </View>
