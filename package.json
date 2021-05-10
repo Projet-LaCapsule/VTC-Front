@@ -18,7 +18,7 @@
     "expo-permissions": "^7.0.0",
     "expo-sms": "~7.0.0",
     "link": "^0.1.5",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "navigation": "^5.2.0",
     "npm": "^6.13.4",
     "react": "16.8.3",
